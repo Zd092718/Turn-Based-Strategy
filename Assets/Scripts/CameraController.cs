@@ -13,7 +13,12 @@ public class CameraController : MonoBehaviour
 
     public float moveSpeed, manualMoveSpeed = 8f;
     private Vector3 moveTarget;
+
     private Vector2 moveInput;
+
+    private float targetRotation;
+    public float rotateSpeed;
+    private int currentAngle;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +49,28 @@ public class CameraController : MonoBehaviour
         {
             SetMoveTarget(GameManager.instance.activePlayer.transform.position);
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            currentAngle++;
+
+            if (currentAngle >= 8)
+            {
+                currentAngle = 0;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            currentAngle--;
+            if (currentAngle < 0)
+            {
+                currentAngle = 7;
+            }
+        }
+
+        targetRotation = (45f * currentAngle) + 45f;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, targetRotation, 0f), rotateSpeed * Time.deltaTime);
     }
 
     public void SetMoveTarget(Vector3 newTarget)
