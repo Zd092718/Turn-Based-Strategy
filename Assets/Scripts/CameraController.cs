@@ -2,8 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
+    public static CameraController instance { get; private set; }
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     public float moveSpeed;
     private Vector3 moveTarget;
 
@@ -16,23 +23,14 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //moving to a point
-        if (transform.position != moveTarget)
+        if (moveTarget != transform.position)
         {
             transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
-
-            if (GameManager.instance.activePlayer == this)
-            {
-                if (Vector3.Distance(transform.position, moveTarget) > .1f)
-                {
-                    CameraController.instance.SetMoveTarget(transform.position);
-                }
-            }
         }
     }
 
-    public void MoveToPoint(Vector3 movePoint)
+    public void SetMoveTarget(Vector3 newTarget)
     {
-        moveTarget = movePoint;
+        moveTarget = newTarget;
     }
 }

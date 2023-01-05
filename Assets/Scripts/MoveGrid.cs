@@ -16,6 +16,8 @@ public class MoveGrid : MonoBehaviour
     void Start()
     {
         GenerateMoveGrid();
+
+        //HideMovePoints();
     }
 
     // Update is called once per frame
@@ -36,12 +38,22 @@ public class MoveGrid : MonoBehaviour
 
                     if (Physics.OverlapSphere(hit.point, obstacleCheckRange, obstacleMask).Length == 0)
                     {
-                        Instantiate(startPoint, hit.point, transform.rotation, spawnParent);
+                        MovePoint newPoint = Instantiate(startPoint, hit.point, transform.rotation, spawnParent);
+
+                        allMovePoints.Add(newPoint);
                     }
 
                 }
 
             }
+        }
+    }
+
+    public void HideMovePoints()
+    {
+        foreach (MovePoint movePoint in allMovePoints)
+        {
+            movePoint.gameObject.SetActive(false);
         }
     }
 }
