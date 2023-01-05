@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 91441247}
   - component: {fileID: 91441246}
   - component: {fileID: 91441245}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +487,7 @@ GameObject:
   - component: {fileID: 310023375}
   - component: {fileID: 310023374}
   - component: {fileID: 310023373}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -790,11 +790,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPoint: {fileID: 6542284889917973067, guid: cec4fc28f46870845a649dbff0072b9d,
     type: 3}
-  spawnRange: {x: 5, y: 5}
+  spawnRange: {x: 10, y: 10}
   spawnParent: {fileID: 995977686}
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 128
+  obstacleCheckRange: 0.25
 --- !u!4 &995977686
 Transform:
   m_ObjectHideFlags: 0
@@ -822,7 +826,7 @@ GameObject:
   - component: {fileID: 1048491336}
   - component: {fileID: 1048491335}
   - component: {fileID: 1048491334}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1149,7 +1153,7 @@ GameObject:
   - component: {fileID: 1243468340}
   - component: {fileID: 1243468339}
   - component: {fileID: 1243468338}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1246,7 +1250,7 @@ GameObject:
   - component: {fileID: 1254853411}
   - component: {fileID: 1254853410}
   - component: {fileID: 1254853409}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1412,7 +1416,7 @@ GameObject:
   - component: {fileID: 1570879201}
   - component: {fileID: 1570879200}
   - component: {fileID: 1570879199}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

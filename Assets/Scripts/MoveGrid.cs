@@ -7,7 +7,9 @@ public class MoveGrid : MonoBehaviour
     public MovePoint startPoint;
     public Vector2Int spawnRange;
     public Transform spawnParent;
-    public LayerMask groundMask;
+    public LayerMask groundMask, obstacleMask;
+    public float obstacleCheckRange;
+    public List<MovePoint> allMovePoints = new List<MovePoint>();
 
 
     // Start is called before the first frame update
@@ -31,7 +33,11 @@ public class MoveGrid : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position + new Vector3(x, 10f, y), Vector3.down, out hit, 20f, groundMask))
                 {
-                    Instantiate(startPoint, hit.point, transform.rotation, spawnParent);
+
+                    if (Physics.OverlapSphere(hit.point, obstacleCheckRange, obstacleMask).Length == 0)
+                    {
+                        Instantiate(startPoint, hit.point, transform.rotation, spawnParent);
+                    }
 
                 }
 
