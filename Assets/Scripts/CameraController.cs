@@ -11,8 +11,9 @@ public class CameraController : MonoBehaviour
         instance = this;
     }
 
-    public float moveSpeed;
+    public float moveSpeed, manualMoveSpeed = 8f;
     private Vector3 moveTarget;
+    private Vector2 moveInput;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,22 @@ public class CameraController : MonoBehaviour
         if (moveTarget != transform.position)
         {
             transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
+        }
+
+        moveInput.x = Input.GetAxis("Horizontal");
+        moveInput.y = Input.GetAxis("Vertical");
+        moveInput.Normalize();
+
+        if (moveInput != Vector2.zero)
+        {
+            transform.position += ((transform.forward * (moveInput.y * manualMoveSpeed)) + (transform.right * (moveInput.x * manualMoveSpeed))) * Time.deltaTime;
+
+            moveTarget = transform.position;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            SetMoveTarget(GameManager.instance.activePlayer.transform.position);
         }
     }
 
