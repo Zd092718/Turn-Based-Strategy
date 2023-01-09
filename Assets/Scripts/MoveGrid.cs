@@ -20,11 +20,11 @@ public class MoveGrid : MonoBehaviour
         //HideMovePoints();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    // // Update is called once per frame
+    // void Update()
+    // {
 
-    }
+    // }
 
     public void GenerateMoveGrid()
     {

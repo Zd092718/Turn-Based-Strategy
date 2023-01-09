@@ -5,12 +5,13 @@ using UnityEngine.AI;
 
 public class CharacterController : MonoBehaviour
 {
-    public float moveSpeed;
+    [SerializeField] private float moveSpeed;
     private Vector3 moveTarget;
 
-    public NavMeshAgent navAgent;
+    [SerializeField] private NavMeshAgent navAgent;
 
     private bool isMoving;
+    [SerializeField] private bool isEnemy;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,7 @@ public class CharacterController : MonoBehaviour
         {
             // transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
 
-            if (GameManager.instance.activePlayer == this)
+            if (GameManager.instance.GetActivePlayer() == this)
             {
                 CameraController.instance.SetMoveTarget(transform.position);
                 if (Vector3.Distance(transform.position, moveTarget) < .2f)
@@ -44,5 +45,10 @@ public class CharacterController : MonoBehaviour
 
         navAgent.SetDestination(moveTarget);
         isMoving = true;
+    }
+
+    public bool GetIsEnemy()
+    {
+        return isEnemy;
     }
 }

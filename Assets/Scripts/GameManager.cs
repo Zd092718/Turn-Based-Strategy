@@ -10,11 +10,32 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
-    public CharacterController activePlayer;
+    [SerializeField] private CharacterController activePlayer;
+
+    [SerializeField] private List<CharacterController> allChars = new List<CharacterController>();
+    [SerializeField] private List<CharacterController> playerTeam = new List<CharacterController>(), enemyTeam = new List<CharacterController>();
 
     // Start is called before the first frame update
     void Start()
     {
+        allChars.AddRange(FindObjectsOfType<CharacterController>());
+
+        foreach (CharacterController cc in allChars)
+        {
+            if (cc.GetIsEnemy() == false)
+            {
+                playerTeam.Add(cc);
+            }
+            else
+            {
+                enemyTeam.Add(cc);
+            }
+        }
+
+        allChars.Clear();
+
+        allChars.AddRange(playerTeam);
+        allChars.AddRange(enemyTeam);
 
     }
 
@@ -22,5 +43,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public CharacterController GetActivePlayer()
+    {
+        return activePlayer;
     }
 }

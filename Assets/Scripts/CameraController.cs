@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
         instance = this;
     }
 
-    public float moveSpeed, manualMoveSpeed = 8f;
+    [SerializeField] private float moveSpeed, manualMoveSpeed = 8f;
     private Vector3 moveTarget;
 
     private Vector2 moveInput;
@@ -47,7 +47,7 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            SetMoveTarget(GameManager.instance.activePlayer.transform.position);
+            SetMoveTarget(GameManager.instance.GetActivePlayer().transform.position);
         }
 
         if (Input.GetKeyDown(KeyCode.E))
