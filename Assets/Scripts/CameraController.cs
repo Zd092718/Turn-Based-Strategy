@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour
         {
             currentAngle++;
 
-            if (currentAngle >= 4)
+            if (currentAngle >= 8)
             {
                 currentAngle = 0;
             }
@@ -65,11 +65,11 @@ public class CameraController : MonoBehaviour
             currentAngle--;
             if (currentAngle < 0)
             {
-                currentAngle = 3;
+                currentAngle = 7;
             }
         }
 
-        targetRotation = (90f * currentAngle) + 45f;
+        targetRotation = (45f * currentAngle) + 45f;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, targetRotation, 0f), rotateSpeed * Time.deltaTime);
     }
 
