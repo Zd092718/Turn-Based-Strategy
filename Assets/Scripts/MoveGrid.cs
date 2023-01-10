@@ -4,27 +4,23 @@ using UnityEngine;
 
 public class MoveGrid : MonoBehaviour
 {
+    public static MoveGrid instance { get; private set; }
+
+    private void Awake()
+    {
+        instance = this;
+
+        GenerateMoveGrid();
+
+        HideMovePoints();
+    }
+
     public MovePoint startPoint;
     public Vector2Int spawnRange;
     public Transform spawnParent;
     public LayerMask groundMask, obstacleMask;
     public float obstacleCheckRange;
     public List<MovePoint> allMovePoints = new List<MovePoint>();
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        GenerateMoveGrid();
-
-        //HideMovePoints();
-    }
-
-    // // Update is called once per frame
-    // void Update()
-    // {
-
-    // }
 
     public void GenerateMoveGrid()
     {
@@ -54,6 +50,28 @@ public class MoveGrid : MonoBehaviour
         foreach (MovePoint movePoint in allMovePoints)
         {
             movePoint.gameObject.SetActive(false);
+        }
+    }
+
+    public void ShowPointsInRange(float moveRange, Vector3 centerPoint)
+    {
+        HideMovePoints();
+
+        foreach (MovePoint mp in allMovePoints)
+        {
+            if (Vector3.Distance(centerPoint, mp.transform.position) <= moveRange)
+            {
+                mp.gameObject.SetActive(true);
+
+                foreach (CharacterController cc in GameManager.instance.GetAllCharacters())
+                {
+                    //Hides move point under existing players
+                    if (Vector3.Distance(cc.transform.position, mp.transform.position) < .5f)
+                    {
+                        mp.gameObject.SetActive(false);
+                    }
+                }
+            }
         }
     }
 }

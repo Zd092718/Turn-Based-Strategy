@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
 
     private int currentChar;
 
+    [SerializeField] private int totalTurnPoints = 2;
+    private int turnPointsRemaining;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +67,9 @@ public class GameManager : MonoBehaviour
 
         activePlayer = allChars[0];
         CameraController.instance.SetMoveTarget(activePlayer.transform.position);
+
+        currentChar = -1;
+        EndTurn();
     }
 
     // Update is called once per frame
@@ -74,7 +80,21 @@ public class GameManager : MonoBehaviour
 
     public void FinishedMovement()
     {
-        EndTurn();
+        SpendTurnPoints();
+    }
+
+    public void SpendTurnPoints()
+    {
+        turnPointsRemaining -= 1;
+
+        if (turnPointsRemaining <= 0)
+        {
+            EndTurn();
+        }
+        else
+        {
+            MoveGrid.instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+        }
     }
 
     public void EndTurn()
@@ -89,10 +109,32 @@ public class GameManager : MonoBehaviour
         activePlayer = allChars[currentChar];
 
         CameraController.instance.SetMoveTarget(activePlayer.transform.position);
+
+        turnPointsRemaining = totalTurnPoints;
+
+        if (activePlayer.GetIsEnemy() == false)
+        {
+            MoveGrid.instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+        }
+        else
+        {
+            StartCoroutine(AISkipCo());
+        }
     }
 
     public CharacterController GetActivePlayer()
     {
         return activePlayer;
+    }
+
+    public List<CharacterController> GetAllCharacters()
+    {
+        return allChars;
+    }
+
+    public IEnumerator AISkipCo()
+    {
+        yield return new WaitForSeconds(1f);
+        EndTurn();
     }
 }

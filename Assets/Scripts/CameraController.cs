@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
     private Vector2 moveInput;
 
     private float targetRotation;
-    public float rotateSpeed;
+    [SerializeField] private float rotateSpeed;
     private int currentAngle;
 
 

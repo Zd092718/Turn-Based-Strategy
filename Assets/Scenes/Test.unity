@@ -156,6 +156,7 @@ MonoBehaviour:
   allChars: []
   playerTeam: []
   enemyTeam: []
+  totalTurnPoints: 2
 --- !u!4 &15961583
 Transform:
   m_ObjectHideFlags: 0
