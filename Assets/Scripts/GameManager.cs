@@ -20,7 +20,19 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        allChars.AddRange(FindObjectsOfType<CharacterController>());
+        List<CharacterController> tempList = new List<CharacterController>();
+
+        tempList.AddRange(FindObjectsOfType<CharacterController>());
+
+        int iterations = tempList.Count + 50;
+        while (tempList.Count > 0 && iterations > 0)
+        {
+            int randomPick = Random.Range(0, tempList.Count);
+            allChars.Add(tempList[randomPick]);
+
+            tempList.RemoveAt(randomPick);
+            iterations--;
+        }
 
         foreach (CharacterController cc in allChars)
         {
@@ -36,6 +48,7 @@ public class GameManager : MonoBehaviour
 
         allChars.Clear();
 
+
         if (Random.value >= .5f)
         {
 
@@ -48,6 +61,7 @@ public class GameManager : MonoBehaviour
             allChars.AddRange(playerTeam);
 
         }
+
         activePlayer = allChars[0];
         CameraController.instance.SetMoveTarget(activePlayer.transform.position);
     }
