@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance { get; private set; }
+    public static GameManager Instance { get; private set; }
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
     [SerializeField] private CharacterController activePlayer;
 
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         }
 
         activePlayer = allChars[0];
-        CameraController.instance.SetMoveTarget(activePlayer.transform.position);
+        CameraController.Instance.SetMoveTarget(activePlayer.transform.position);
 
         currentChar = -1;
         EndTurn();
@@ -93,7 +93,16 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            MoveGrid.instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+            if (activePlayer.GetIsEnemy() == false)
+            {
+                MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+
+                PlayerInputMenu.Instance.ShowInputMenu();
+            }
+            else
+            {
+                PlayerInputMenu.Instance.HideMenus();
+            }
         }
     }
 
@@ -108,17 +117,21 @@ public class GameManager : MonoBehaviour
 
         activePlayer = allChars[currentChar];
 
-        CameraController.instance.SetMoveTarget(activePlayer.transform.position);
+        CameraController.Instance.SetMoveTarget(activePlayer.transform.position);
 
         turnPointsRemaining = totalTurnPoints;
 
         if (activePlayer.GetIsEnemy() == false)
         {
-            MoveGrid.instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+            MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+
+            PlayerInputMenu.Instance.ShowInputMenu();
         }
         else
         {
             StartCoroutine(AISkipCo());
+
+            PlayerInputMenu.Instance.HideMenus();
         }
     }
 

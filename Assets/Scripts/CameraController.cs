@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public static CameraController instance { get; private set; }
+    public static CameraController Instance { get; private set; }
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     [SerializeField] private float moveSpeed, manualMoveSpeed = 8f;
@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            SetMoveTarget(GameManager.instance.GetActivePlayer().transform.position);
+            SetMoveTarget(GameManager.Instance.GetActivePlayer().transform.position);
         }
 
         if (Input.GetKeyDown(KeyCode.E))

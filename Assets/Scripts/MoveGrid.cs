@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MoveGrid : MonoBehaviour
 {
-    public static MoveGrid instance { get; private set; }
+    public static MoveGrid Instance { get; private set; }
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
 
         GenerateMoveGrid();
 
@@ -63,7 +63,7 @@ public class MoveGrid : MonoBehaviour
             {
                 mp.gameObject.SetActive(true);
 
-                foreach (CharacterController cc in GameManager.instance.GetAllCharacters())
+                foreach (CharacterController cc in GameManager.Instance.GetAllCharacters())
                 {
                     //Hides move point under existing players
                     if (Vector3.Distance(cc.transform.position, mp.transform.position) < .5f)

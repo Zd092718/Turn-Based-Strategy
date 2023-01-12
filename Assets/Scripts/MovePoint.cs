@@ -7,8 +7,10 @@ public class MovePoint : MonoBehaviour
     private void OnMouseDown()
     {
         //FindObjectOfType<CharacterController>().MoveToPoint(transform.position);
-        GameManager.instance.GetActivePlayer().MoveToPoint(transform.position);
+        GameManager.Instance.GetActivePlayer().MoveToPoint(transform.position);
 
-        MoveGrid.instance.HideMovePoints();
+        MoveGrid.Instance.HideMovePoints();
+
+        PlayerInputMenu.Instance.HideMenus();
     }
 }

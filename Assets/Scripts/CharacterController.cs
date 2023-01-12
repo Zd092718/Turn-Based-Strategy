@@ -30,14 +30,14 @@ public class CharacterController : MonoBehaviour
         {
             // transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
 
-            if (GameManager.instance.GetActivePlayer() == this)
+            if (GameManager.Instance.GetActivePlayer() == this)
             {
-                CameraController.instance.SetMoveTarget(transform.position);
+                CameraController.Instance.SetMoveTarget(transform.position);
                 if (Vector3.Distance(transform.position, moveTarget) < .2f)
                 {
                     isMoving = false;
 
-                    GameManager.instance.FinishedMovement();
+                    GameManager.Instance.FinishedMovement();
                 }
             }
         }
