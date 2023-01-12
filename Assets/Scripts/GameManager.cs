@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         {
             if (activePlayer.GetIsEnemy() == false)
             {
-                MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+                //MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
 
                 PlayerInputMenu.Instance.ShowInputMenu();
             }
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
 
         if (activePlayer.GetIsEnemy() == false)
         {
-            MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+            //MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
 
             PlayerInputMenu.Instance.ShowInputMenu();
         }
@@ -149,5 +149,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         EndTurn();
+    }
+
+    public int GetRemainingTurnPoints()
+    {
+        return turnPointsRemaining;
     }
 }

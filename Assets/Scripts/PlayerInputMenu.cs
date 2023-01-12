@@ -22,4 +22,12 @@ public class PlayerInputMenu : MonoBehaviour
     {
         inputMenu.SetActive(true);
     }
+
+    public void ShowMove()
+    {
+        if(GameManager.Instance.GetRemainingTurnPoints() >= 1)
+        {
+            MoveGrid.Instance.ShowPointsInRange(GameManager.Instance.GetActivePlayer().GetMoveRange(), GameManager.Instance.GetActivePlayer().transform.position);
+        }
+    }
 }

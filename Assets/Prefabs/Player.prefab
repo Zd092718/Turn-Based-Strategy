@@ -63,6 +63,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   navAgent: {fileID: 7210904264452578531}
+  isEnemy: 0
+  moveRange: 3.5
 --- !u!195 &7210904264452578531
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -72,7 +74,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8620407357008376959}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.52
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
