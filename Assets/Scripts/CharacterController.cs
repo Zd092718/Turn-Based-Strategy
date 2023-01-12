@@ -13,7 +13,7 @@ public class CharacterController : MonoBehaviour
     private bool isMoving;
     [SerializeField] private bool isEnemy;
 
-    [SerializeField] private float moveRange = 3.5f;
+    [SerializeField] private float moveRange = 3.5f, runRange = 8f;
 
     // Start is called before the first frame update
     void Start()
@@ -59,5 +59,9 @@ public class CharacterController : MonoBehaviour
     public float GetMoveRange()
     {
         return moveRange;
+    }
+    public float GetRunRange()
+    {
+        return runRange;
     }
 }

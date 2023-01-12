@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int totalTurnPoints = 2;
     private int turnPointsRemaining;
 
+    [SerializeField] private int currentActionCost = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -85,7 +87,7 @@ public class GameManager : MonoBehaviour
 
     public void SpendTurnPoints()
     {
-        turnPointsRemaining -= 1;
+        turnPointsRemaining -= currentActionCost;
 
         if (turnPointsRemaining <= 0)
         {
@@ -133,6 +135,8 @@ public class GameManager : MonoBehaviour
 
             PlayerInputMenu.Instance.HideMenus();
         }
+
+        currentActionCost = 1;
     }
 
     public CharacterController GetActivePlayer()
@@ -155,4 +159,15 @@ public class GameManager : MonoBehaviour
     {
         return turnPointsRemaining;
     }
+
+    public int GetCurrentActionCost()
+    {
+        return currentActionCost;
+    }
+
+    public void SetCurrentActionCost(int currentActionCost)
+    {
+        this.currentActionCost = currentActionCost;
+    }
+
 }
