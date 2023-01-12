@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         List<CharacterController> tempList = new List<CharacterController>();
 
         tempList.AddRange(FindObjectsOfType<CharacterController>());
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         CameraController.Instance.SetMoveTarget(activePlayer.transform.position);
 
         currentChar = -1;
+        //PlayerInputMenu.Instance.HideMenus();
         EndTurn();
     }
 
@@ -106,6 +108,8 @@ public class GameManager : MonoBehaviour
                 PlayerInputMenu.Instance.HideMenus();
             }
         }
+
+        PlayerInputMenu.Instance.UpdateTurnPointText(turnPointsRemaining);
     }
 
     public void EndTurn()
@@ -128,15 +132,19 @@ public class GameManager : MonoBehaviour
             //MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
 
             PlayerInputMenu.Instance.ShowInputMenu();
+            PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(true);
         }
         else
         {
             StartCoroutine(AISkipCo());
 
             PlayerInputMenu.Instance.HideMenus();
+            PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(false);
         }
 
         currentActionCost = 1;
+
+        PlayerInputMenu.Instance.UpdateTurnPointText(turnPointsRemaining);
     }
 
     public CharacterController GetActivePlayer()
