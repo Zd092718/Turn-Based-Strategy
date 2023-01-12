@@ -68,4 +68,9 @@ public class PlayerInputMenu : MonoBehaviour
     {
         return turnPointsText;
     }
+
+    public void SkipTurn()
+    {
+        GameManager.Instance.EndTurn();
+    }
 }

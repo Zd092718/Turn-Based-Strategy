@@ -8,13 +8,13 @@ public class MovePoint : MonoBehaviour
     {
         //FindObjectOfType<CharacterController>().MoveToPoint(transform.position);
 
-        if(Input.mousePosition.y > Screen.height * .1)
+        if (Input.mousePosition.y > Screen.height * .1)
         {
-        GameManager.Instance.GetActivePlayer().MoveToPoint(transform.position);
+            GameManager.Instance.GetActivePlayer().MoveToPoint(transform.position);
 
-        MoveGrid.Instance.HideMovePoints();
+            MoveGrid.Instance.HideMovePoints();
 
-        PlayerInputMenu.Instance.HideMenus();
+            PlayerInputMenu.Instance.HideMenus();
         }
     }
 }
