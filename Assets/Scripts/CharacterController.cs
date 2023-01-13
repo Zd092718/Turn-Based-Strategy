@@ -15,6 +15,9 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private float moveRange = 3.5f, runRange = 8f;
 
+    [SerializeField] private float meleeRange = 2f;
+    [SerializeField] private List<CharacterController> meleeTargets = new List<CharacterController>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +54,32 @@ public class CharacterController : MonoBehaviour
         isMoving = true;
     }
 
+    public void GetNearbyMeleeTargets()
+    {
+        meleeTargets.Clear();
+
+        if (isEnemy == false)
+        {
+            foreach (CharacterController cc in GameManager.Instance.GetEnemyTeam())
+            {
+                if (Vector3.Distance(transform.position, cc.transform.position) < meleeRange)
+                {
+                    meleeTargets.Add(cc);
+                }
+            }
+        }
+        else
+        {
+            foreach (CharacterController cc in GameManager.Instance.GetPlayerTeam())
+            {
+                if (Vector3.Distance(transform.position, cc.transform.position) < meleeRange)
+                {
+                    meleeTargets.Add(cc);
+                }
+            }
+        }
+    }
+
     public bool GetIsEnemy()
     {
         return isEnemy;
@@ -63,5 +92,10 @@ public class CharacterController : MonoBehaviour
     public float GetRunRange()
     {
         return runRange;
+    }
+
+    public List<CharacterController> GetMeleeTargetsList()
+    {
+        return meleeTargets;
     }
 }

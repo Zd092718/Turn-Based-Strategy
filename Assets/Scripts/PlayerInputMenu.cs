@@ -7,7 +7,7 @@ public class PlayerInputMenu : MonoBehaviour
 {
     public static PlayerInputMenu Instance { get; private set; }
 
-    [SerializeField] private GameObject inputMenu, moveMenu;
+    [SerializeField] private GameObject inputMenu, moveMenu, meleeMenu;
     [SerializeField] private TMP_Text turnPointsText;
 
     private void Awake()
@@ -17,8 +17,9 @@ public class PlayerInputMenu : MonoBehaviour
 
     public void HideMenus()
     {
-        inputMenu.SetActive(false); 
+        inputMenu.SetActive(false);
         moveMenu.SetActive(false);
+        meleeMenu.SetActive(false);
     }
 
     public void ShowInputMenu()
@@ -43,7 +44,7 @@ public class PlayerInputMenu : MonoBehaviour
 
     public void ShowMove()
     {
-        if(GameManager.Instance.GetRemainingTurnPoints() >= 1)
+        if (GameManager.Instance.GetRemainingTurnPoints() >= 1)
         {
             MoveGrid.Instance.ShowPointsInRange(GameManager.Instance.GetActivePlayer().GetMoveRange(), GameManager.Instance.GetActivePlayer().transform.position);
             GameManager.Instance.SetCurrentActionCost(1);
@@ -72,5 +73,31 @@ public class PlayerInputMenu : MonoBehaviour
     public void SkipTurn()
     {
         GameManager.Instance.EndTurn();
+    }
+
+    public void ShowMeleeMenu()
+    {
+        HideMenus();
+        meleeMenu.SetActive(true);
+    }
+
+    public void HideMeleeMenu()
+    {
+        HideMenus();
+        ShowInputMenu();
+    }
+
+    public void CheckMelee()
+    {
+        GameManager.Instance.GetActivePlayer().GetNearbyMeleeTargets();
+
+        if (GameManager.Instance.GetActivePlayer().GetMeleeTargetsList().Count > 0)
+        {
+            ShowMeleeMenu();
+        }
+        else
+        {
+            Debug.Log("No enemies in melee range.");
+        }
     }
 }

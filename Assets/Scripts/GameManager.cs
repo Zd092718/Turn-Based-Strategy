@@ -178,4 +178,14 @@ public class GameManager : MonoBehaviour
         this.currentActionCost = currentActionCost;
     }
 
+    public List<CharacterController> GetEnemyTeam()
+    {
+        return enemyTeam;
+    }
+
+    public List<CharacterController> GetPlayerTeam()
+    {
+        return playerTeam;
+    }
+
 }
