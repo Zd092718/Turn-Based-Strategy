@@ -85,6 +85,7 @@ public class PlayerInputMenu : MonoBehaviour
     {
         HideMenus();
         ShowInputMenu();
+        GameManager.Instance.GetTargetDisplay().SetActive(false);
     }
 
     public void CheckMelee()
@@ -94,6 +95,8 @@ public class PlayerInputMenu : MonoBehaviour
         if (GameManager.Instance.GetActivePlayer().GetMeleeTargetsList().Count > 0)
         {
             ShowMeleeMenu();
+            GameManager.Instance.GetTargetDisplay().SetActive(true);
+            GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform.position;
         }
         else
         {
@@ -126,5 +129,6 @@ public class PlayerInputMenu : MonoBehaviour
         {
             GameManager.Instance.GetActivePlayer().currentMeleeTarget = 0;
         }
+        GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform.position;
     }
 }

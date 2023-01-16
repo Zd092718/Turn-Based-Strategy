@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private int turnPointsRemaining;
 
     [SerializeField] private int currentActionCost = 1;
+    [SerializeField] private GameObject targetDisplay;
 
     // Start is called before the first frame update
     void Start()
@@ -188,4 +189,8 @@ public class GameManager : MonoBehaviour
         return playerTeam;
     }
 
+    public GameObject GetTargetDisplay()
+    {
+        return targetDisplay;
+    }
 }
