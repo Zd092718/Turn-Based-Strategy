@@ -17,6 +17,8 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private float meleeRange = 2f;
     [SerializeField] private List<CharacterController> meleeTargets = new List<CharacterController>();
+    //[HideInInspector]
+    public int currentMeleeTarget;
 
     // Start is called before the first frame update
     void Start()
@@ -78,6 +80,16 @@ public class CharacterController : MonoBehaviour
                 }
             }
         }
+
+        if(currentMeleeTarget >= meleeTargets.Count)
+        {
+            currentMeleeTarget = 0;
+        }
+    }
+
+    public void PerformMelee()
+    {
+        meleeTargets[currentMeleeTarget].gameObject.SetActive(false);
     }
 
     public bool GetIsEnemy()

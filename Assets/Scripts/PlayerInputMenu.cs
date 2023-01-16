@@ -100,4 +100,31 @@ public class PlayerInputMenu : MonoBehaviour
             Debug.Log("No enemies in melee range.");
         }
     }
+
+    public void MeleeHit()
+    {
+        GameManager.Instance.GetActivePlayer().PerformMelee();
+        GameManager.Instance.SetCurrentActionCost(1);
+
+        HideMenus();
+        ///GameManager.Instance.SpendTurnPoints();
+
+        StartCoroutine(WaitToEndActionCo(1f));
+    }
+
+    public IEnumerator WaitToEndActionCo(float timeToWait)
+    {
+        yield return new WaitForSeconds(timeToWait);
+
+        GameManager.Instance.SpendTurnPoints();
+    }
+
+    public void NextMeleeTarget()
+    {
+        GameManager.Instance.GetActivePlayer().currentMeleeTarget++;
+        if(GameManager.Instance.GetActivePlayer().currentMeleeTarget >= GameManager.Instance.GetActivePlayer().GetMeleeTargetsList().Count)
+        {
+            GameManager.Instance.GetActivePlayer().currentMeleeTarget = 0;
+        }
+    }
 }
