@@ -19,6 +19,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private List<CharacterController> meleeTargets = new List<CharacterController>();
     [HideInInspector]
     public int currentMeleeTarget;
+    [SerializeField] private float meleeDamage = 5f;
 
     [SerializeField] private float maxHealth = 10f;
     private float currentHealth;
@@ -85,7 +86,7 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        if(currentMeleeTarget >= meleeTargets.Count)
+        if (currentMeleeTarget >= meleeTargets.Count)
         {
             currentMeleeTarget = 0;
         }
@@ -93,14 +94,35 @@ public class CharacterController : MonoBehaviour
 
     public void PerformMelee()
     {
-        meleeTargets[currentMeleeTarget].gameObject.SetActive(false);
+        //meleeTargets[currentMeleeTarget].gameObject.SetActive(false);
+        meleeTargets[currentMeleeTarget].TakeDamage(meleeDamage);
     }
 
     public void TakeDamage(float damageToTake)
     {
         currentHealth -= damageToTake;
+
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+
+            navAgent.enabled = false;
+
+            transform.rotation = Quaternion.Euler(-70f, transform.rotation.eulerAngles.y, 0f);
+
+            GameManager.Instance.GetAllCharacters().Remove(this);
+            if (GameManager.Instance.GetPlayerTeam().Contains(this))
+            {
+                GameManager.Instance.GetPlayerTeam().Remove(this);
+            }
+            if (GameManager.Instance.GetEnemyTeam().Contains(this))
+            {
+                GameManager.Instance.GetEnemyTeam().Remove(this);
+            }
+        }
     }
 
+    #region !Getters and Setters!
     public bool GetIsEnemy()
     {
         return isEnemy;
@@ -134,4 +156,5 @@ public class CharacterController : MonoBehaviour
     {
         this.currentHealth = currentHealth;
     }
+    #endregion
 }

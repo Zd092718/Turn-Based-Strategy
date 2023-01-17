@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
 
         PlayerInputMenu.Instance.UpdateTurnPointText(turnPointsRemaining);
     }
-
+    #region !Getters and Setters!
     public CharacterController GetActivePlayer()
     {
         return activePlayer;
@@ -194,4 +194,5 @@ public class GameManager : MonoBehaviour
     {
         return targetDisplay;
     }
+    #endregion
 }
