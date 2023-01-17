@@ -125,6 +125,7 @@ public class GameManager : MonoBehaviour
         activePlayer = allChars[currentChar];
 
         CameraController.Instance.SetMoveTarget(activePlayer.transform.position);
+       
 
         turnPointsRemaining = totalTurnPoints;
 

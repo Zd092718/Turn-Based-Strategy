@@ -9,10 +9,26 @@ public class PlayerInputMenu : MonoBehaviour
 
     [SerializeField] private GameObject inputMenu, moveMenu, meleeMenu;
     [SerializeField] private TMP_Text turnPointsText;
+    [SerializeField] private TMP_Text errorText;
+
+    [SerializeField] private float errorDisplayTime = 2f;
+    private float errorCounter;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        if (errorCounter > 0)
+        {
+            errorCounter -= Time.deltaTime;
+            if (errorCounter <= 0)
+            {
+                errorText.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void HideMenus()
@@ -100,7 +116,7 @@ public class PlayerInputMenu : MonoBehaviour
         }
         else
         {
-            Debug.Log("No enemies in melee range.");
+            ShowErrorText("No Enemies in Melee Range!");
         }
     }
 
@@ -111,6 +127,7 @@ public class PlayerInputMenu : MonoBehaviour
 
         HideMenus();
         ///GameManager.Instance.SpendTurnPoints();
+        GameManager.Instance.GetTargetDisplay().SetActive(false);
 
         StartCoroutine(WaitToEndActionCo(1f));
     }
@@ -125,10 +142,20 @@ public class PlayerInputMenu : MonoBehaviour
     public void NextMeleeTarget()
     {
         GameManager.Instance.GetActivePlayer().currentMeleeTarget++;
-        if(GameManager.Instance.GetActivePlayer().currentMeleeTarget >= GameManager.Instance.GetActivePlayer().GetMeleeTargetsList().Count)
+        if (GameManager.Instance.GetActivePlayer().currentMeleeTarget >= GameManager.Instance.GetActivePlayer().GetMeleeTargetsList().Count)
         {
             GameManager.Instance.GetActivePlayer().currentMeleeTarget = 0;
         }
         GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform.position;
+    }
+
+    public void ShowErrorText(string messageToShow)
+    {
+        errorText.text = messageToShow;
+        errorText.gameObject.SetActive(true);
+
+        errorCounter = errorDisplayTime;
+
+
     }
 }

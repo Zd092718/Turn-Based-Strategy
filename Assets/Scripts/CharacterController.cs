@@ -17,14 +17,18 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private float meleeRange = 2f;
     [SerializeField] private List<CharacterController> meleeTargets = new List<CharacterController>();
-    //[HideInInspector]
+    [HideInInspector]
     public int currentMeleeTarget;
+
+    [SerializeField] private float maxHealth = 10f;
+    private float currentHealth;
 
     // Start is called before the first frame update
     void Start()
     {
         moveTarget = transform.position;
         navAgent.speed = moveSpeed;
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -92,6 +96,11 @@ public class CharacterController : MonoBehaviour
         meleeTargets[currentMeleeTarget].gameObject.SetActive(false);
     }
 
+    public void TakeDamage(float damageToTake)
+    {
+        currentHealth -= damageToTake;
+    }
+
     public bool GetIsEnemy()
     {
         return isEnemy;
@@ -109,5 +118,20 @@ public class CharacterController : MonoBehaviour
     public List<CharacterController> GetMeleeTargetsList()
     {
         return meleeTargets;
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public void SetCurrentHealth(float currentHealth)
+    {
+        this.currentHealth = currentHealth;
     }
 }

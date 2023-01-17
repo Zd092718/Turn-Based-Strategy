@@ -9,6 +9,8 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        moveTarget = transform.position;
     }
 
     [SerializeField] private float moveSpeed, manualMoveSpeed = 8f;
@@ -19,6 +21,11 @@ public class CameraController : MonoBehaviour
     private float targetRotation;
     [SerializeField] private float rotateSpeed;
     private int currentAngle;
+
+    private void Start()
+    {
+        
+    }
 
 
     // Update is called once per frame
