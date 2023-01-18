@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class CharacterController : MonoBehaviour
 {
@@ -24,12 +26,17 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float maxHealth = 10f;
     private float currentHealth;
 
+    [SerializeField] private TMP_Text healthText;
+    [SerializeField] private Slider healthSlider;
+
     // Start is called before the first frame update
     void Start()
     {
         moveTarget = transform.position;
         navAgent.speed = moveSpeed;
         currentHealth = maxHealth;
+
+        UpdateHealthDisplay();
     }
 
     // Update is called once per frame
@@ -120,6 +127,16 @@ public class CharacterController : MonoBehaviour
                 GameManager.Instance.GetEnemyTeam().Remove(this);
             }
         }
+
+        UpdateHealthDisplay();
+    }
+
+    public void UpdateHealthDisplay()
+    {
+        healthText.text = "HP: " + currentHealth + "/" + maxHealth;
+
+        healthSlider.maxValue = maxHealth;
+        healthSlider.value = currentHealth;
     }
 
     #region !Getters and Setters!
