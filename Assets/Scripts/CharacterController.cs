@@ -17,17 +17,21 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private float moveRange = 3.5f, runRange = 8f;
 
-    [SerializeField] private float meleeRange = 2f;
+    [SerializeField] private float meleeRange, meleeDamage;
     [SerializeField] private List<CharacterController> meleeTargets = new List<CharacterController>();
     [HideInInspector]
     public int currentMeleeTarget;
-    [SerializeField] private float meleeDamage = 5f;
 
     [SerializeField] private float maxHealth = 10f;
     private float currentHealth;
 
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private Slider healthSlider;
+
+    [SerializeField] private float shootRange, shootDamage;
+    private List<CharacterController> shootTargets = new List<CharacterController>();
+    [HideInInspector]
+    public int currentShootTarget;
 
     // Start is called before the first frame update
     void Start()
@@ -139,6 +143,36 @@ public class CharacterController : MonoBehaviour
         healthSlider.value = currentHealth;
     }
 
+    public void GetShootTargets()
+    {
+        shootTargets.Clear();
+
+        if (isEnemy == false)
+        {
+            foreach (CharacterController cc in GameManager.Instance.GetEnemyTeam())
+            {
+                if (Vector3.Distance(transform.position, cc.transform.position) < shootRange)
+                {
+                    shootTargets.Add(cc);
+                }
+            }
+        }
+        else
+        {
+            foreach (CharacterController cc in GameManager.Instance.GetPlayerTeam())
+            {
+                if (Vector3.Distance(transform.position, cc.transform.position) < shootRange)
+                {
+                    shootTargets.Add(cc);
+                }
+            }
+        }
+        if (currentShootTarget >= shootTargets.Count)
+        {
+            currentShootTarget = 0;
+        }
+    }
+
     #region !Getters and Setters!
     public bool GetIsEnemy()
     {
@@ -172,6 +206,11 @@ public class CharacterController : MonoBehaviour
     public void SetCurrentHealth(float currentHealth)
     {
         this.currentHealth = currentHealth;
+    }
+
+    public List<CharacterController> GetShootTargetsList()
+    {
+        return shootTargets;
     }
     #endregion
 }

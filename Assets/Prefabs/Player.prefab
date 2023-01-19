@@ -599,12 +599,15 @@ MonoBehaviour:
   moveRange: 3.5
   runRange: 8
   meleeRange: 2
+  meleeDamage: 5
   meleeTargets: []
   currentMeleeTarget: 0
-  meleeDamage: 5
   maxHealth: 10
   healthText: {fileID: 506757546}
   healthSlider: {fileID: 310166634}
+  shootRange: 10
+  shootDamage: 3
+  currentShootTarget: 0
 --- !u!195 &7210904264452578531
 NavMeshAgent:
   m_ObjectHideFlags: 0

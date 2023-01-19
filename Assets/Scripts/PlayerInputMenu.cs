@@ -176,5 +176,32 @@ public class PlayerInputMenu : MonoBehaviour
         GameManager.Instance.GetTargetDisplay().SetActive(false);
     }
 
+    public void CheckShoot()
+    {
+        GameManager.Instance.GetActivePlayer().GetShootTargets();
+
+        if(GameManager.Instance.GetActivePlayer().GetShootTargetsList().Count > 0)
+        {
+            ShowShootMenu();
+
+            GameManager.Instance.GetTargetDisplay().SetActive(true);
+            GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform.position;
+
+        } else
+        {
+            ShowErrorText("No Enemies In Firing Range");
+        }
+    }
+
+    public void NextShootTarget()
+    {
+        GameManager.Instance.GetActivePlayer().currentShootTarget++;
+        if (GameManager.Instance.GetActivePlayer().currentShootTarget >= GameManager.Instance.GetActivePlayer().GetShootTargetsList().Count)
+        {
+            GameManager.Instance.GetActivePlayer().currentShootTarget = 0;
+        }
+        GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform.position;
+    }
+
     #endregion
 }
