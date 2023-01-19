@@ -7,7 +7,7 @@ public class PlayerInputMenu : MonoBehaviour
 {
     public static PlayerInputMenu Instance { get; private set; }
 
-    [SerializeField] private GameObject inputMenu, moveMenu, meleeMenu;
+    [SerializeField] private GameObject inputMenu, moveMenu, meleeMenu, shootMenu;
     [SerializeField] private TMP_Text turnPointsText;
     [SerializeField] private TMP_Text errorText;
 
@@ -36,6 +36,7 @@ public class PlayerInputMenu : MonoBehaviour
         inputMenu.SetActive(false);
         moveMenu.SetActive(false);
         meleeMenu.SetActive(false);
+        shootMenu.SetActive(false);
     }
 
     public void ShowInputMenu()
@@ -43,6 +44,37 @@ public class PlayerInputMenu : MonoBehaviour
         inputMenu.SetActive(true);
     }
 
+    public void UpdateTurnPointText(int turnPoints)
+    {
+        turnPointsText.text = "Turn Points Remaining: " + turnPoints;
+    }
+
+    public TMP_Text GetTurnPointText()
+    {
+        return turnPointsText;
+    }
+
+    public void SkipTurn()
+    {
+        GameManager.Instance.EndTurn();
+    }
+
+    public IEnumerator WaitToEndActionCo(float timeToWait)
+    {
+        yield return new WaitForSeconds(timeToWait);
+
+        GameManager.Instance.SpendTurnPoints();
+    }
+
+    public void ShowErrorText(string messageToShow)
+    {
+        errorText.text = messageToShow;
+        errorText.gameObject.SetActive(true);
+
+        errorCounter = errorDisplayTime;
+    }
+
+    #region Movement Functions
     public void ShowMoveMenu()
     {
         HideMenus();
@@ -75,22 +107,9 @@ public class PlayerInputMenu : MonoBehaviour
             GameManager.Instance.SetCurrentActionCost(2);
         }
     }
+    #endregion
 
-    public void UpdateTurnPointText(int turnPoints)
-    {
-        turnPointsText.text = "Turn Points Remaining: " + turnPoints;
-    }
-
-    public TMP_Text GetTurnPointText()
-    {
-        return turnPointsText;
-    }
-
-    public void SkipTurn()
-    {
-        GameManager.Instance.EndTurn();
-    }
-
+    #region Melee Functions
     public void ShowMeleeMenu()
     {
         HideMenus();
@@ -132,13 +151,6 @@ public class PlayerInputMenu : MonoBehaviour
         StartCoroutine(WaitToEndActionCo(1f));
     }
 
-    public IEnumerator WaitToEndActionCo(float timeToWait)
-    {
-        yield return new WaitForSeconds(timeToWait);
-
-        GameManager.Instance.SpendTurnPoints();
-    }
-
     public void NextMeleeTarget()
     {
         GameManager.Instance.GetActivePlayer().currentMeleeTarget++;
@@ -148,14 +160,21 @@ public class PlayerInputMenu : MonoBehaviour
         }
         GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform.position;
     }
+    #endregion
 
-    public void ShowErrorText(string messageToShow)
+    #region Shooting Functions
+    public void ShowShootMenu()
     {
-        errorText.text = messageToShow;
-        errorText.gameObject.SetActive(true);
-
-        errorCounter = errorDisplayTime;
-
-
+        HideMenus();
+        shootMenu.SetActive(true);
     }
+
+    public void HideShootMenu()
+    {
+        HideMenus();
+        ShowInputMenu();
+        GameManager.Instance.GetTargetDisplay().SetActive(false);
+    }
+
+    #endregion
 }
