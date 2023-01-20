@@ -32,6 +32,7 @@ public class CharacterController : MonoBehaviour
     private List<CharacterController> shootTargets = new List<CharacterController>();
     [HideInInspector]
     public int currentShootTarget;
+    [SerializeField] private Transform shootPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -171,6 +172,14 @@ public class CharacterController : MonoBehaviour
         {
             currentShootTarget = 0;
         }
+    }
+
+    public void FireShot()
+    {
+        Vector3 targetPoint = new Vector3(shootTargets[currentShootTarget].transform.position.x, shootTargets[currentShootTarget].shootPoint.position.y, shootTargets[currentShootTarget].transform.position.z);
+        Vector3 shootDirection = (targetPoint - shootPoint.position).normalized;
+
+        Debug.DrawRay(shootPoint.position, shootDirection * shootRange, Color.red, 1f);
     }
 
     #region !Getters and Setters!
