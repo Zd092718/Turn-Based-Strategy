@@ -180,6 +180,22 @@ public class CharacterController : MonoBehaviour
         Vector3 shootDirection = (targetPoint - shootPoint.position).normalized;
 
         Debug.DrawRay(shootPoint.position, shootDirection * shootRange, Color.red, 1f);
+
+        RaycastHit hit;
+        if (Physics.Raycast(shootPoint.position, shootDirection, out hit, shootRange))
+        {
+            if (hit.collider.gameObject == shootTargets[currentShootTarget].gameObject)
+            {
+                Debug.Log(name + "Shot Target " + shootTargets[currentShootTarget].name);
+                shootTargets[currentShootTarget].TakeDamage(shootDamage);
+            }
+            else
+            {
+                Debug.Log(name + "missed " + shootTargets[currentShootTarget].name);
+
+                PlayerInputMenu.Instance.ShowErrorText("Shot Missed!");
+            }
+        }
     }
 
     #region !Getters and Setters!
