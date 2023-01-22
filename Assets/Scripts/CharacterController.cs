@@ -39,6 +39,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float shotRemainTime = .5f;
     private float shotRemainCounter;
 
+    [SerializeField] private GameObject shotHitEffect, shotMissEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -82,6 +84,7 @@ public class CharacterController : MonoBehaviour
             }
         }
     }
+    
 
     public void MoveToPoint(Vector3 movePoint)
     {
@@ -195,6 +198,7 @@ public class CharacterController : MonoBehaviour
     public void FireShot()
     {
         Vector3 targetPoint = new Vector3(shootTargets[currentShootTarget].transform.position.x, shootTargets[currentShootTarget].shootPoint.position.y, shootTargets[currentShootTarget].transform.position.z);
+        targetPoint.y = Random.Range(targetPoint.y, shootTargets[currentShootTarget].transform.position.y + .25f);
 
         Vector3 targetOffset = new Vector3(Random.Range(-shotMissRange.x, shotMissRange.x),
                                             Random.Range(-shotMissRange.y, shotMissRange.y),
@@ -214,12 +218,16 @@ public class CharacterController : MonoBehaviour
             {
                 Debug.Log(name + "Shot Target " + shootTargets[currentShootTarget].name);
                 shootTargets[currentShootTarget].TakeDamage(shootDamage);
+
+                Instantiate(shotHitEffect, hit.point, Quaternion.identity);
             }
             else
             {
                 Debug.Log(name + "missed " + shootTargets[currentShootTarget].name);
 
                 PlayerInputMenu.Instance.ShowErrorText("Shot Missed!");
+
+                Instantiate(shotMissEffect, hit.point, Quaternion.identity);
             }
 
             shootLine.SetPosition(0, shootPoint.position);

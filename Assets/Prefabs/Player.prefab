@@ -784,6 +784,11 @@ MonoBehaviour:
   shootPoint: {fileID: 1754535148}
   shotMissRange: {x: 0.7, y: 0.5, z: 0.7}
   shootLine: {fileID: 1286836812}
+  shotRemainTime: 0.5
+  shotHitEffect: {fileID: 805024766353186306, guid: e901dafd85b329a4f85ad59d03b1ad22,
+    type: 3}
+  shotMissEffect: {fileID: 805024766353186306, guid: 31cc7dbf867f802489b496c260b8ee6d,
+    type: 3}
 --- !u!195 &7210904264452578531
 NavMeshAgent:
   m_ObjectHideFlags: 0
