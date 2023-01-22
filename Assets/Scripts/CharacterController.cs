@@ -35,6 +35,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private Transform shootPoint;
     [SerializeField] private Vector3 shotMissRange;
 
+    [SerializeField] private LineRenderer shootLine;
+    [SerializeField] private float shotRemainTime = .5f;
+    private float shotRemainCounter;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +47,10 @@ public class CharacterController : MonoBehaviour
         currentHealth = maxHealth;
 
         UpdateHealthDisplay();
+
+        shootLine.transform.position = Vector3.zero;
+        shootLine.transform.rotation = Quaternion.identity;
+        shootLine.transform.SetParent(null);
     }
 
     // Update is called once per frame
@@ -62,6 +70,15 @@ public class CharacterController : MonoBehaviour
 
                     GameManager.Instance.FinishedMovement();
                 }
+            }
+        }
+
+        if(shotRemainCounter > 0)
+        {
+            shotRemainCounter -= Time.deltaTime;
+            if(shotRemainCounter <= 0)
+            {
+                shootLine.gameObject.SetActive(false);
             }
         }
     }
@@ -204,12 +221,21 @@ public class CharacterController : MonoBehaviour
 
                 PlayerInputMenu.Instance.ShowErrorText("Shot Missed!");
             }
+
+            shootLine.SetPosition(0, shootPoint.position);
+            shootLine.SetPosition(1, hit.point);
         } else
         {
             Debug.Log(name + "missed " + shootTargets[currentShootTarget].name);
 
             PlayerInputMenu.Instance.ShowErrorText("Shot Missed!");
+
+            shootLine.SetPosition(0, shootPoint.position);
+            shootLine.SetPosition(1, shootPoint.position + (shootDirection * shootRange));
         }
+
+        shootLine.gameObject.SetActive(true);
+        shotRemainCounter = shotRemainTime;
     }
 
     #region !Getters and Setters!
