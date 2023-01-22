@@ -641,6 +641,7 @@ MonoBehaviour:
   shootDamage: 3
   currentShootTarget: 0
   shootPoint: {fileID: 1754535148}
+  shotMissRange: {x: 0.7, y: 0.5, z: 0.7}
 --- !u!195 &7210904264452578531
 NavMeshAgent:
   m_ObjectHideFlags: 0

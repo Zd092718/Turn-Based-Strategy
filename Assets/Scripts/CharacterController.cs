@@ -33,6 +33,7 @@ public class CharacterController : MonoBehaviour
     [HideInInspector]
     public int currentShootTarget;
     [SerializeField] private Transform shootPoint;
+    [SerializeField] private Vector3 shotMissRange;
 
     // Start is called before the first frame update
     void Start()
@@ -177,6 +178,14 @@ public class CharacterController : MonoBehaviour
     public void FireShot()
     {
         Vector3 targetPoint = new Vector3(shootTargets[currentShootTarget].transform.position.x, shootTargets[currentShootTarget].shootPoint.position.y, shootTargets[currentShootTarget].transform.position.z);
+
+        Vector3 targetOffset = new Vector3(Random.Range(-shotMissRange.x, shotMissRange.x),
+                                            Random.Range(-shotMissRange.y, shotMissRange.y),
+                                            Random.Range(-shotMissRange.z, shotMissRange.z));
+
+        targetOffset = targetOffset * (Vector3.Distance(targetPoint, shootPoint.position) / shootRange);
+        targetPoint += targetOffset;
+
         Vector3 shootDirection = (targetPoint - shootPoint.position).normalized;
 
         Debug.DrawRay(shootPoint.position, shootDirection * shootRange, Color.red, 1f);
@@ -195,6 +204,11 @@ public class CharacterController : MonoBehaviour
 
                 PlayerInputMenu.Instance.ShowErrorText("Shot Missed!");
             }
+        } else
+        {
+            Debug.Log(name + "missed " + shootTargets[currentShootTarget].name);
+
+            PlayerInputMenu.Instance.ShowErrorText("Shot Missed!");
         }
     }
 
