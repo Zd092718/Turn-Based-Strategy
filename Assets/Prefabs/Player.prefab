@@ -778,11 +778,11 @@ MonoBehaviour:
   maxHealth: 10
   healthText: {fileID: 506757546}
   healthSlider: {fileID: 310166634}
-  shootRange: 10
+  shootRange: 40
   shootDamage: 3
   currentShootTarget: 0
   shootPoint: {fileID: 1754535148}
-  shotMissRange: {x: 0.7, y: 0.5, z: 0.7}
+  shotMissRange: {x: 0.7, y: 0.25, z: 0.7}
   shootLine: {fileID: 1286836812}
   shotRemainTime: 0.5
   shotHitEffect: {fileID: 805024766353186306, guid: e901dafd85b329a4f85ad59d03b1ad22,

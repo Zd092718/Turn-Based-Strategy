@@ -10,6 +10,7 @@ public class PlayerInputMenu : MonoBehaviour
     [SerializeField] private GameObject inputMenu, moveMenu, meleeMenu, shootMenu;
     [SerializeField] private TMP_Text turnPointsText;
     [SerializeField] private TMP_Text errorText;
+    [SerializeField] private TMP_Text hitChanceText;
 
     [SerializeField] private float errorDisplayTime = 2f;
     private float errorCounter;
@@ -132,6 +133,8 @@ public class PlayerInputMenu : MonoBehaviour
             ShowMeleeMenu();
             GameManager.Instance.GetTargetDisplay().SetActive(true);
             GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform.position;
+
+            GameManager.Instance.GetActivePlayer().LookAtTarget(GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform);
         }
         else
         {
@@ -159,6 +162,7 @@ public class PlayerInputMenu : MonoBehaviour
             GameManager.Instance.GetActivePlayer().currentMeleeTarget = 0;
         }
         GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform.position;
+        GameManager.Instance.GetActivePlayer().LookAtTarget(GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform);
     }
     #endregion
 
@@ -167,6 +171,8 @@ public class PlayerInputMenu : MonoBehaviour
     {
         HideMenus();
         shootMenu.SetActive(true);
+
+        UpdateHitChance();
     }
 
     public void HideShootMenu()
@@ -187,6 +193,7 @@ public class PlayerInputMenu : MonoBehaviour
             GameManager.Instance.GetTargetDisplay().SetActive(true);
             GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform.position;
 
+            GameManager.Instance.GetActivePlayer().LookAtTarget(GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform);
         }
         else
         {
@@ -202,6 +209,10 @@ public class PlayerInputMenu : MonoBehaviour
             GameManager.Instance.GetActivePlayer().currentShootTarget = 0;
         }
         GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform.position;
+
+        UpdateHitChance();
+
+        GameManager.Instance.GetActivePlayer().LookAtTarget(GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform);
     }
 
     public void FireShot()
@@ -212,6 +223,13 @@ public class PlayerInputMenu : MonoBehaviour
         GameManager.Instance.GetTargetDisplay().SetActive(false);
 
         StartCoroutine(WaitToEndActionCo(1f));
+    }
+
+    public void UpdateHitChance()
+    {
+        float hitChance = Random.Range(50f, 95f);
+
+        hitChanceText.text = "Chance To Hit: " + GameManager.Instance.GetActivePlayer().CheckShotChance().ToString("F1") + "%";
     }
 
     #endregion

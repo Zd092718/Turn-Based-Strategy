@@ -75,16 +75,16 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        if(shotRemainCounter > 0)
+        if (shotRemainCounter > 0)
         {
             shotRemainCounter -= Time.deltaTime;
-            if(shotRemainCounter <= 0)
+            if (shotRemainCounter <= 0)
             {
                 shootLine.gameObject.SetActive(false);
             }
         }
     }
-    
+
 
     public void MoveToPoint(Vector3 movePoint)
     {
@@ -204,7 +204,7 @@ public class CharacterController : MonoBehaviour
                                             Random.Range(-shotMissRange.y, shotMissRange.y),
                                             Random.Range(-shotMissRange.z, shotMissRange.z));
 
-        targetOffset = targetOffset * (Vector3.Distance(targetPoint, shootPoint.position) / shootRange);
+        targetOffset = targetOffset * (Vector3.Distance(shootTargets[currentShootTarget].transform.position, transform.position));
         targetPoint += targetOffset;
 
         Vector3 shootDirection = (targetPoint - shootPoint.position).normalized;
@@ -232,7 +232,8 @@ public class CharacterController : MonoBehaviour
 
             shootLine.SetPosition(0, shootPoint.position);
             shootLine.SetPosition(1, hit.point);
-        } else
+        }
+        else
         {
             Debug.Log(name + "missed " + shootTargets[currentShootTarget].name);
 
@@ -244,6 +245,47 @@ public class CharacterController : MonoBehaviour
 
         shootLine.gameObject.SetActive(true);
         shotRemainCounter = shotRemainTime;
+    }
+
+    public float CheckShotChance()
+    {
+        float shotChance = 0f;
+
+        RaycastHit hit;
+
+        Vector3 targetPoint = new Vector3(shootTargets[currentShootTarget].transform.position.x, shootTargets[currentShootTarget].shootPoint.position.y, shootTargets[currentShootTarget].transform.position.z);
+
+        Vector3 shootDirection = (targetPoint - shootPoint.position).normalized;
+        Debug.DrawRay(shootPoint.position, shootDirection * shootRange, Color.red, 1f);
+        if (Physics.Raycast(shootPoint.position, shootDirection, out hit, shootRange))
+        {
+            if (hit.collider.gameObject == shootTargets[currentShootTarget].gameObject)
+            {
+                shotChance += 50f;
+            }
+        }
+
+        targetPoint.y = shootTargets[currentShootTarget].transform.position.y + .25f;
+        shootDirection = (targetPoint - shootPoint.position).normalized;
+        Debug.DrawRay(shootPoint.position, shootDirection * shootRange, Color.red, 1f);
+        if (Physics.Raycast(shootPoint.position, shootDirection, out hit, shootRange))
+        {
+            if (hit.collider.gameObject == shootTargets[currentShootTarget].gameObject)
+            {
+                shotChance += 50f;
+            }
+        }
+
+        shotChance = shotChance * .95f;
+        shotChance *= 1f - (Vector3.Distance(shootTargets[currentShootTarget].transform.position, transform.position) / shootRange);
+
+
+        return shotChance;
+    }
+
+    public void LookAtTarget(Transform target)
+    {
+        transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z), Vector3.up);
     }
 
     #region !Getters and Setters!
