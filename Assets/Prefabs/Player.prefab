@@ -772,17 +772,17 @@ MonoBehaviour:
   moveRange: 3.5
   runRange: 8
   meleeRange: 2
-  meleeDamage: 5
+  meleeDamage: 7
   meleeTargets: []
   currentMeleeTarget: 0
   maxHealth: 10
   healthText: {fileID: 506757546}
   healthSlider: {fileID: 310166634}
   shootRange: 40
-  shootDamage: 3
+  shootDamage: 5
   currentShootTarget: 0
   shootPoint: {fileID: 1754535148}
-  shotMissRange: {x: 0.7, y: 0.25, z: 0.7}
+  shotMissRange: {x: 0.5, y: 0.25, z: 0.5}
   shootLine: {fileID: 1286836812}
   shotRemainTime: 0.5
   shotHitEffect: {fileID: 805024766353186306, guid: e901dafd85b329a4f85ad59d03b1ad22,
@@ -798,7 +798,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8620407357008376959}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.52
+  m_Radius: 0.6
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50

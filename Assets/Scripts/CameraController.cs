@@ -20,11 +20,18 @@ public class CameraController : MonoBehaviour
 
     private float targetRotation;
     [SerializeField] private float rotateSpeed;
+
     private int currentAngle;
+
+    [SerializeField] private Transform cam;
+    [SerializeField] private float fireCamViewAngle = 30f;
+    private float targetCamViewAngle;
+    private bool isFireView;
+
 
     private void Start()
     {
-        
+        targetCamViewAngle = 45f;
     }
 
 
@@ -71,12 +78,31 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        targetRotation = (45f * currentAngle) + 45f;
+        if (!isFireView)
+        {
+            targetRotation = (45f * currentAngle) + 45f;
+        }
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, targetRotation, 0f), rotateSpeed * Time.deltaTime);
+
+        cam.localRotation = Quaternion.Slerp(cam.localRotation, Quaternion.Euler(targetCamViewAngle, 0f, 0f), rotateSpeed * Time.deltaTime);
     }
 
     public void SetMoveTarget(Vector3 newTarget)
     {
         moveTarget = newTarget;
+
+        targetCamViewAngle = 45f;
+        isFireView = false;
+    }
+
+    public void SetFireView()
+    {
+        moveTarget = GameManager.Instance.GetActivePlayer().transform.position;
+
+        targetRotation = GameManager.Instance.GetActivePlayer().transform.rotation.eulerAngles.y;
+
+        targetCamViewAngle = fireCamViewAngle;
+
+        isFireView = true;
     }
 }

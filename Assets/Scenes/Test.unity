@@ -1254,6 +1254,8 @@ MonoBehaviour:
   moveSpeed: 40
   manualMoveSpeed: 8
   rotateSpeed: 5
+  cam: {fileID: 961739753}
+  fireCamViewAngle: 30
 --- !u!4 &444761548
 Transform:
   m_ObjectHideFlags: 0
@@ -2529,7 +2531,7 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 128
-  obstacleCheckRange: 0.5
+  obstacleCheckRange: 0.7
   allMovePoints: []
 --- !u!4 &995977686
 Transform:
@@ -5325,10 +5327,15 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7210904264452578531, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
+    - target: {fileID: 8620407357008376947, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
         type: 3}
-      propertyPath: m_Radius
-      value: 0.6
+      propertyPath: meleeDamage
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620407357008376947, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
+        type: 3}
+      propertyPath: shootDamage
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8620407357008376958, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
         type: 3}

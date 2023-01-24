@@ -65,6 +65,8 @@ public class PlayerInputMenu : MonoBehaviour
         yield return new WaitForSeconds(timeToWait);
 
         GameManager.Instance.SpendTurnPoints();
+
+        CameraController.Instance.SetMoveTarget(GameManager.Instance.GetActivePlayer().transform.position);
     }
 
     public void ShowErrorText(string messageToShow)
@@ -179,7 +181,10 @@ public class PlayerInputMenu : MonoBehaviour
     {
         HideMenus();
         ShowInputMenu();
+
         GameManager.Instance.GetTargetDisplay().SetActive(false);
+
+        CameraController.Instance.SetMoveTarget(GameManager.Instance.GetActivePlayer().transform.position);
     }
 
     public void CheckShoot()
@@ -194,6 +199,8 @@ public class PlayerInputMenu : MonoBehaviour
             GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform.position;
 
             GameManager.Instance.GetActivePlayer().LookAtTarget(GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform);
+
+            CameraController.Instance.SetFireView();
         }
         else
         {
@@ -213,6 +220,8 @@ public class PlayerInputMenu : MonoBehaviour
         UpdateHitChance();
 
         GameManager.Instance.GetActivePlayer().LookAtTarget(GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform);
+
+        CameraController.Instance.SetFireView();
     }
 
     public void FireShot()
