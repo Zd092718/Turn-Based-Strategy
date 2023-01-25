@@ -147,6 +147,8 @@ public class GameManager : MonoBehaviour
         currentActionCost = 1;
 
         PlayerInputMenu.Instance.UpdateTurnPointText(turnPointsRemaining);
+
+        activePlayer.SetDefending(false);
     }
     #region !Getters and Setters!
     public CharacterController GetActivePlayer()

@@ -41,6 +41,9 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private GameObject shotHitEffect, shotMissEffect;
 
+    [SerializeField] private GameObject defendObject;
+    [SerializeField] private bool isDefending;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +56,11 @@ public class CharacterController : MonoBehaviour
         shootLine.transform.position = Vector3.zero;
         shootLine.transform.rotation = Quaternion.identity;
         shootLine.transform.SetParent(null);
+
+        if(isEnemy == true && isDefending == true)
+        {
+            SetDefending(true);
+        }
     }
 
     // Update is called once per frame
@@ -133,6 +141,11 @@ public class CharacterController : MonoBehaviour
 
     public void TakeDamage(float damageToTake)
     {
+        if (isDefending)
+        {
+            damageToTake *= .5f;
+        }
+
         currentHealth -= damageToTake;
 
         if (currentHealth <= 0)
@@ -286,6 +299,13 @@ public class CharacterController : MonoBehaviour
     public void LookAtTarget(Transform target)
     {
         transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z), Vector3.up);
+    }
+
+    public void SetDefending(bool shouldDefend)
+    {
+        isDefending = shouldDefend;
+
+        defendObject.SetActive(isDefending);
     }
 
     #region !Getters and Setters!

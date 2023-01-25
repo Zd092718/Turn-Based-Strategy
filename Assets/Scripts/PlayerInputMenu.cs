@@ -242,4 +242,14 @@ public class PlayerInputMenu : MonoBehaviour
     }
 
     #endregion
+
+    #region Defending Functions
+
+    public void Defend()
+    {
+        GameManager.Instance.GetActivePlayer().SetDefending(true);
+        GameManager.Instance.EndTurn();
+    }
+
+    #endregion
 }
