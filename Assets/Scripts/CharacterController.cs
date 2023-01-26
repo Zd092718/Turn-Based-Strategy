@@ -11,9 +11,10 @@ public class CharacterController : MonoBehaviour
     private Vector3 moveTarget;
 
     [SerializeField] private NavMeshAgent navAgent;
-
     private bool isMoving;
+
     [SerializeField] private bool isEnemy;
+    [SerializeField] private AIBrain brain;
 
     [SerializeField] private float moveRange = 3.5f, runRange = 8f;
 
@@ -347,5 +348,11 @@ public class CharacterController : MonoBehaviour
     {
         return shootTargets;
     }
+
+    public AIBrain GetBrain()
+    {
+        return brain;
+    }
+
     #endregion
 }

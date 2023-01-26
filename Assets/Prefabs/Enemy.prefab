@@ -127,6 +127,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8620407357008376947, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
         type: 3}
+      propertyPath: brain
+      value: 
+      objectReference: {fileID: 7407434525570764521}
+    - target: {fileID: 8620407357008376947, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
+        type: 3}
       propertyPath: isEnemy
       value: 1
       objectReference: {fileID: 0}
@@ -138,7 +143,7 @@ PrefabInstance:
     - target: {fileID: 8620407357008376958, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.11043449
+      value: 8.72
       objectReference: {fileID: 0}
     - target: {fileID: 8620407357008376958, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
         type: 3}
@@ -148,7 +153,7 @@ PrefabInstance:
     - target: {fileID: 8620407357008376958, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.65964
+      value: 8.24
       objectReference: {fileID: 0}
     - target: {fileID: 8620407357008376958, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
         type: 3}
@@ -198,3 +203,21 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 157922303741683004}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8471512443162956099 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8620407357008376959, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
+    type: 3}
+  m_PrefabInstance: {fileID: 157922303741683004}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7407434525570764521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8471512443162956099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b4f686fa20e1045a451a05adf89186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

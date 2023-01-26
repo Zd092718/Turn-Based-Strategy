@@ -107,6 +107,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 PlayerInputMenu.Instance.HideMenus();
+
+                activePlayer.GetBrain().ChooseAction();
             }
         }
 
@@ -138,10 +140,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(AISkipCo());
+            //StartCoroutine(AISkipCo());
 
             PlayerInputMenu.Instance.HideMenus();
             PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(false);
+
+            activePlayer.GetBrain().ChooseAction();
         }
 
         currentActionCost = 1;
