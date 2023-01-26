@@ -58,7 +58,7 @@ public class CharacterController : MonoBehaviour
         shootLine.transform.rotation = Quaternion.identity;
         shootLine.transform.SetParent(null);
 
-        if(isEnemy == true && isDefending == true)
+        if (isEnemy == true && isDefending == true)
         {
             SetDefending(true);
         }
@@ -352,6 +352,16 @@ public class CharacterController : MonoBehaviour
     public AIBrain GetBrain()
     {
         return brain;
+    }
+
+    public int GetCurrentMeleeTarget()
+    {
+        return currentMeleeTarget;
+    }
+
+    public void SetCurrentMeleeTarget(int currentMeleeTarget)
+    {
+        this.currentMeleeTarget = currentMeleeTarget;
     }
 
     #endregion

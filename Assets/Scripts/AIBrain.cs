@@ -8,6 +8,8 @@ public class AIBrain : MonoBehaviour
 
     [SerializeField] private float waitBeforeActing = 1f;
 
+    [SerializeField] private float waitAfterActing = 2f;
+
     public void ChooseAction()
     {
         StartCoroutine(ChooseCo());
@@ -22,13 +24,35 @@ public class AIBrain : MonoBehaviour
         bool actionTaken = false;
 
 
+        charCon.GetNearbyMeleeTargets();
+
+        if (charCon.GetMeleeTargetsList().Count > 0)
+        {
+            Debug.Log("Is Meleeing");
+
+            charCon.SetCurrentMeleeTarget(Random.Range(0, charCon.GetMeleeTargetsList().Count));
+
+            GameManager.Instance.SetCurrentActionCost(1);
+
+            StartCoroutine(WaitToEndAction(waitAfterActing));
+
+            charCon.PerformMelee();
+
+            actionTaken = true;
+        }
 
 
-
-        if(actionTaken == false)
+        if (actionTaken == false)
         {
             //Skip turn
             GameManager.Instance.EndTurn();
         }
+    }
+
+    public IEnumerator WaitToEndAction(float timeToWait)
+    {
+        Debug.Log("Waiting to end action.");
+        yield return new WaitForSeconds(timeToWait);
+        GameManager.Instance.SpendTurnPoints();
     }
 }
