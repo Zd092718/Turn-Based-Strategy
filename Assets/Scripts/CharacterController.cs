@@ -354,15 +354,25 @@ public class CharacterController : MonoBehaviour
         return brain;
     }
 
-    public int GetCurrentMeleeTarget()
-    {
-        return currentMeleeTarget;
-    }
+    //public int GetCurrentMeleeTarget()
+    //{
+    //    return currentMeleeTarget;
+    //}
 
-    public void SetCurrentMeleeTarget(int currentMeleeTarget)
-    {
-        this.currentMeleeTarget = currentMeleeTarget;
-    }
+    //public void SetCurrentMeleeTarget(int currentMeleeTarget)
+    //{
+    //    this.currentMeleeTarget = currentMeleeTarget;
+    //}
+
+    //public int GetCurrentShootTarget()
+    //{
+    //    return currentShootTarget;
+    //}
+
+    //public void SetCurrentShootTarget(int currentShootTarget)
+    //{
+    //    this.currentShootTarget = currentShootTarget;
+    //}
 
     #endregion
 }

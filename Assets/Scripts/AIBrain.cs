@@ -6,9 +6,8 @@ public class AIBrain : MonoBehaviour
 {
     [SerializeField] private CharacterController charCon;
 
-    [SerializeField] private float waitBeforeActing = 1f;
+    [SerializeField] private float waitBeforeActing = 1f, waitAfterActing = 2f, waitBeforeShooting = .5f;
 
-    [SerializeField] private float waitAfterActing = 2f;
 
     public void ChooseAction()
     {
@@ -30,7 +29,7 @@ public class AIBrain : MonoBehaviour
         {
             Debug.Log("Is Meleeing");
 
-            charCon.SetCurrentMeleeTarget(Random.Range(0, charCon.GetMeleeTargetsList().Count));
+            charCon.currentMeleeTarget = Random.Range(0, charCon.GetMeleeTargetsList().Count);
 
             GameManager.Instance.SetCurrentActionCost(1);
 
@@ -39,6 +38,47 @@ public class AIBrain : MonoBehaviour
             charCon.PerformMelee();
 
             actionTaken = true;
+        }
+
+        charCon.GetShootTargets();
+
+        if (!actionTaken && charCon.GetShootTargetsList().Count > 0)
+        {
+            List<float> hitChances = new List<float>();
+
+            for (int i = 0; i < charCon.GetShootTargetsList().Count; i++)
+            {
+                charCon.currentShootTarget = i;
+                charCon.LookAtTarget(charCon.GetShootTargetsList()[i].transform);
+                hitChances.Add(charCon.CheckShotChance());
+            }
+
+            float highestChance = 0f;
+            for (int i = 0; i < hitChances.Count; i++)
+            {
+                if (hitChances[i] > highestChance)
+                {
+                    highestChance = hitChances[i];
+                    charCon.currentShootTarget = i;
+                }
+                else if (hitChances[i] == highestChance)
+                {
+                    if (Random.value > .5f)
+                    {
+                        charCon.currentShootTarget = i;
+                    }
+                }
+            }
+
+            if (highestChance > 0)
+            {
+                charCon.LookAtTarget(charCon.GetShootTargetsList()[charCon.currentShootTarget].transform);
+                CameraController.Instance.SetFireView();
+
+                actionTaken = true;
+
+                StartCoroutine(WaitToShoot());
+            }
         }
 
 
@@ -54,5 +94,16 @@ public class AIBrain : MonoBehaviour
         Debug.Log("Waiting to end action.");
         yield return new WaitForSeconds(timeToWait);
         GameManager.Instance.SpendTurnPoints();
+    }
+
+    public IEnumerator WaitToShoot()
+    {
+        yield return new WaitForSeconds(waitBeforeShooting);
+
+        charCon.FireShot();
+
+        GameManager.Instance.SetCurrentActionCost(1);
+
+        StartCoroutine(WaitToEndAction(waitAfterActing));
     }
 }
