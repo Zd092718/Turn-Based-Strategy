@@ -8,6 +8,9 @@ public class AIBrain : MonoBehaviour
 
     [SerializeField] private float waitBeforeActing = 1f, waitAfterActing = 2f, waitBeforeShooting = .5f;
 
+    [Range(0f, 100f)]
+    [SerializeField] private float ignoreShootChance = 20f;
+
 
     public void ChooseAction()
     {
@@ -41,51 +44,57 @@ public class AIBrain : MonoBehaviour
         }
 
         charCon.GetShootTargets();
-
         if (!actionTaken && charCon.GetShootTargetsList().Count > 0)
         {
-            List<float> hitChances = new List<float>();
-
-            for (int i = 0; i < charCon.GetShootTargetsList().Count; i++)
+            if (Random.Range(0f, 100f) > ignoreShootChance)
             {
-                charCon.currentShootTarget = i;
-                charCon.LookAtTarget(charCon.GetShootTargetsList()[i].transform);
-                hitChances.Add(charCon.CheckShotChance());
-            }
 
-            float highestChance = 0f;
-            for (int i = 0; i < hitChances.Count; i++)
-            {
-                if (hitChances[i] > highestChance)
+                List<float> hitChances = new List<float>();
+
+                for (int i = 0; i < charCon.GetShootTargetsList().Count; i++)
                 {
-                    highestChance = hitChances[i];
                     charCon.currentShootTarget = i;
+                    charCon.LookAtTarget(charCon.GetShootTargetsList()[i].transform);
+                    hitChances.Add(charCon.CheckShotChance());
                 }
-                else if (hitChances[i] == highestChance)
+
+                float highestChance = 0f;
+                for (int i = 0; i < hitChances.Count; i++)
                 {
-                    if (Random.value > .5f)
+                    if (hitChances[i] > highestChance)
                     {
+                        highestChance = hitChances[i];
                         charCon.currentShootTarget = i;
                     }
+                    else if (hitChances[i] == highestChance)
+                    {
+                        if (Random.value > .5f)
+                        {
+                            charCon.currentShootTarget = i;
+                        }
+                    }
+                }
+
+                if (highestChance > 0)
+                {
+                    charCon.LookAtTarget(charCon.GetShootTargetsList()[charCon.currentShootTarget].transform);
+                    CameraController.Instance.SetFireView();
+
+                    actionTaken = true;
+
+                    StartCoroutine(WaitToShoot());
+
+                    Debug.Log(name + " shot at " + charCon.GetShootTargetsList()[charCon.currentShootTarget].name);
                 }
             }
-
-            if (highestChance > 0)
-            {
-                charCon.LookAtTarget(charCon.GetShootTargetsList()[charCon.currentShootTarget].transform);
-                CameraController.Instance.SetFireView();
-
-                actionTaken = true;
-
-                StartCoroutine(WaitToShoot());
-            }
         }
-
 
         if (actionTaken == false)
         {
             //Skip turn
             GameManager.Instance.EndTurn();
+
+            Debug.Log(name + " skipped turn.");
         }
     }
 
