@@ -20,6 +20,7 @@ public class MoveGrid : MonoBehaviour
     public Transform spawnParent;
     public LayerMask groundMask, obstacleMask;
     public float obstacleCheckRange;
+    public float charCheckRange;
     public List<MovePoint> allMovePoints = new List<MovePoint>();
 
     public void GenerateMoveGrid()
@@ -66,12 +67,41 @@ public class MoveGrid : MonoBehaviour
                 foreach (CharacterController cc in GameManager.Instance.GetAllCharacters())
                 {
                     //Hides move point under existing players
-                    if (Vector3.Distance(cc.transform.position, mp.transform.position) < .5f)
+                    if (Vector3.Distance(cc.transform.position, mp.transform.position) < charCheckRange)
                     {
                         mp.gameObject.SetActive(false);
                     }
                 }
             }
         }
+    }
+
+    public List<MovePoint> GetMovePointsInRange(float moveRange, Vector3 centerPoint)
+    {
+        List<MovePoint> foundPoints = new List<MovePoint>();
+
+        foreach (MovePoint mp in allMovePoints)
+        {
+            if (Vector3.Distance(centerPoint, mp.transform.position) <= moveRange)
+            {
+                bool shouldAdd = true;
+
+                foreach (CharacterController cc in GameManager.Instance.GetAllCharacters())
+                {
+                    //Hides move point under existing players
+                    if (Vector3.Distance(cc.transform.position, mp.transform.position) < charCheckRange)
+                    {
+                        shouldAdd = false;
+                    }
+                }
+
+                if (shouldAdd == true)
+                {
+                    foundPoints.Add(mp);
+                }
+            }
+        }
+
+        return foundPoints;
     }
 }

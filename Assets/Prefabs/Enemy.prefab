@@ -224,6 +224,8 @@ MonoBehaviour:
   charCon: {fileID: 8471512443162956111}
   waitBeforeActing: 1
   waitAfterActing: 2
+  waitBeforeShooting: 0.5
+  ignoreShootChance: 100
 --- !u!114 &8471512443162956111 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8620407357008376947, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
