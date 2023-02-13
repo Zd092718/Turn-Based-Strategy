@@ -5074,6 +5074,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7407434525570764521, guid: 8dc42e87fa4892f42afff70d17fcc5ee,
+        type: 3}
+      propertyPath: ignoreShootChance
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 8471512443162956098, guid: 8dc42e87fa4892f42afff70d17fcc5ee,
         type: 3}
       propertyPath: m_RootOrder
@@ -5133,16 +5138,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8471512443162956111, guid: 8dc42e87fa4892f42afff70d17fcc5ee,
-        type: 3}
-      propertyPath: meleeRange
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8471512443162956111, guid: 8dc42e87fa4892f42afff70d17fcc5ee,
-        type: 3}
-      propertyPath: isDefending
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8dc42e87fa4892f42afff70d17fcc5ee, type: 3}
@@ -5426,11 +5421,6 @@ PrefabInstance:
     - target: {fileID: 1537274141, guid: 4c09d4bdeee72ce4483884f0403c3fd7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8620407357008376947, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
-        type: 3}
-      propertyPath: shootRange
-      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8620407357008376958, guid: 4c09d4bdeee72ce4483884f0403c3fd7,
         type: 3}
