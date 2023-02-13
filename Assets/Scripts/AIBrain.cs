@@ -8,8 +8,13 @@ public class AIBrain : MonoBehaviour
 
     [SerializeField] private float waitBeforeActing = 1f, waitAfterActing = 2f, waitBeforeShooting = .5f;
 
+    [SerializeField]
+    private float moveChance = 60f, defendChance = 25f, skipChance = .5f;
+
     [Range(0f, 100f)]
     [SerializeField] private float ignoreShootChance = 20f, moveRandomChance = .5f;
+
+
 
 
     public void ChooseAction()
@@ -91,81 +96,96 @@ public class AIBrain : MonoBehaviour
 
         if (actionTaken == false)
         {
-            float moveRandom = Random.Range(0f, 100f);
-            List<MovePoint> potentialMovePoints = new List<MovePoint>();
-            int selectedPoint = 0;
+            float actionDecision = Random.Range(0f, moveChance + defendChance + skipChance);
 
-            if (moveRandom > moveRandomChance)
+            if (actionDecision < moveChance)
             {
-                int nearestPlayer = 0;
 
-                for (int i = 1; i < GameManager.Instance.GetPlayerTeam().Count; i++)
+                float moveRandom = Random.Range(0f, 100f);
+                List<MovePoint> potentialMovePoints = new List<MovePoint>();
+                int selectedPoint = 0;
+
+                if (moveRandom > moveRandomChance)
                 {
-                    if (Vector3.Distance(transform.position, GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position) > Vector3.Distance(transform.position, GameManager.Instance.GetPlayerTeam()[i].transform.position))
+                    int nearestPlayer = 0;
+
+                    for (int i = 1; i < GameManager.Instance.GetPlayerTeam().Count; i++)
                     {
-                        nearestPlayer = i;
-                    }
-                }
-
-
-                //Run if distance is greater than walk range
-                if (Vector3.Distance(transform.position, GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position) > charCon.GetMoveRange())
-                {
-                    potentialMovePoints = MoveGrid.Instance.GetMovePointsInRange(charCon.GetRunRange(), transform.position);
-
-                    float closestDistance = 1000f;
-                    for (int i = 0; i < potentialMovePoints.Count; i++)
-                    {
-                        if (Vector3.Distance(GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position, potentialMovePoints[i].transform.position) < closestDistance && GameManager.Instance.GetRemainingTurnPoints() >= 2)
+                        if (Vector3.Distance(transform.position, GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position) > Vector3.Distance(transform.position, GameManager.Instance.GetPlayerTeam()[i].transform.position))
                         {
-                            closestDistance = Vector3.Distance(GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position, potentialMovePoints[i].transform.position);
-                            selectedPoint = i;
+                            nearestPlayer = i;
                         }
                     }
 
-                    GameManager.Instance.SetCurrentActionCost(2);
 
-                    Debug.Log(name + " is running");
+                    //Run if distance is greater than walk range
+                    if (Vector3.Distance(transform.position, GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position) > charCon.GetMoveRange())
+                    {
+                        potentialMovePoints = MoveGrid.Instance.GetMovePointsInRange(charCon.GetRunRange(), transform.position);
+
+                        float closestDistance = 1000f;
+                        for (int i = 0; i < potentialMovePoints.Count; i++)
+                        {
+                            if (Vector3.Distance(GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position, potentialMovePoints[i].transform.position) < closestDistance && GameManager.Instance.GetRemainingTurnPoints() >= 2)
+                            {
+                                closestDistance = Vector3.Distance(GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position, potentialMovePoints[i].transform.position);
+                                selectedPoint = i;
+                            }
+                        }
+
+                        GameManager.Instance.SetCurrentActionCost(2);
+
+                        Debug.Log(name + " is running");
+                    }
+                    else
+                    {
+                        potentialMovePoints = MoveGrid.Instance.GetMovePointsInRange(charCon.GetMoveRange(), transform.position);
+
+                        float closestDistance = 1000f;
+                        for (int i = 0; i < potentialMovePoints.Count; i++)
+                        {
+                            if (Vector3.Distance(GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position, potentialMovePoints[i].transform.position) < closestDistance)
+                            {
+                                closestDistance = Vector3.Distance(GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position, potentialMovePoints[i].transform.position);
+                                selectedPoint = i;
+                            }
+                        }
+
+                        GameManager.Instance.SetCurrentActionCost(1);
+
+                        Debug.Log(name + " is walking");
+                    }
                 }
                 else
                 {
                     potentialMovePoints = MoveGrid.Instance.GetMovePointsInRange(charCon.GetMoveRange(), transform.position);
 
-                    float closestDistance = 1000f;
-                    for (int i = 0; i < potentialMovePoints.Count; i++)
-                    {
-                        if (Vector3.Distance(GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position, potentialMovePoints[i].transform.position) < closestDistance)
-                        {
-                            closestDistance = Vector3.Distance(GameManager.Instance.GetPlayerTeam()[nearestPlayer].transform.position, potentialMovePoints[i].transform.position);
-                            selectedPoint = i;
-                        }
-                    }
+                    selectedPoint = Random.Range(0, potentialMovePoints.Count);
 
                     GameManager.Instance.SetCurrentActionCost(1);
 
-                    Debug.Log(name + " is walking");
+                    Debug.Log(name + " is walking to a random point.");
                 }
-            } else
-            {
-                potentialMovePoints = MoveGrid.Instance.GetMovePointsInRange(charCon.GetMoveRange(), transform.position);
 
-                selectedPoint = Random.Range(0, potentialMovePoints.Count);
-
-                GameManager.Instance.SetCurrentActionCost(1);
-
-                Debug.Log(name + " is walking to a random point.");
+                charCon.MoveToPoint(potentialMovePoints[selectedPoint].transform.position);
             }
+            else if (actionDecision < moveChance + defendChance)
+            {
+                Debug.Log(name + " is defending.");
 
-            charCon.MoveToPoint(potentialMovePoints[selectedPoint].transform.position);
+                charCon.SetDefending(true);
 
-            actionTaken = true;
+                GameManager.Instance.SetCurrentActionCost(GameManager.Instance.GetRemainingTurnPoints());
 
-            if (actionTaken == false)
+                StartCoroutine(WaitToEndAction(waitAfterActing));
+            }
+            else
             {
                 //Skip turn
                 GameManager.Instance.EndTurn();
 
                 Debug.Log(name + " skipped turn.");
+
             }
         }
     }
