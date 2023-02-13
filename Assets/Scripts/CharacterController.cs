@@ -218,7 +218,7 @@ public class CharacterController : MonoBehaviour
                                             Random.Range(-shotMissRange.y, shotMissRange.y),
                                             Random.Range(-shotMissRange.z, shotMissRange.z));
 
-        targetOffset = targetOffset * (Vector3.Distance(shootTargets[currentShootTarget].transform.position, transform.position));
+        targetOffset = targetOffset * (Vector3.Distance(shootTargets[currentShootTarget].transform.position, transform.position) / shootRange);
         targetPoint += targetOffset;
 
         Vector3 shootDirection = (targetPoint - shootPoint.position).normalized;
