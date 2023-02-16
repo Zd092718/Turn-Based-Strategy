@@ -863,7 +863,7 @@ MonoBehaviour:
   maxHealth: 10
   healthText: {fileID: 506757546}
   healthSlider: {fileID: 310166634}
-  shootRange: 50
+  shootRange: 30
   shootDamage: 3
   currentShootTarget: 0
   shootPoint: {fileID: 1754535148}

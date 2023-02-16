@@ -23,6 +23,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int currentActionCost = 1;
     [SerializeField] private GameObject targetDisplay;
 
+    [SerializeField] private bool shouldSpawnAtRandomPoints;
+    [SerializeField] private List<Transform> playerSpawnPoints = new List<Transform>();
+    [SerializeField] private List<Transform> enemySpawnPoints = new List<Transform>();
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,6 +76,33 @@ public class GameManager : MonoBehaviour
         }
 
         activePlayer = allChars[0];
+
+        if (shouldSpawnAtRandomPoints)
+        {
+            foreach(CharacterController cc in playerTeam)
+            {
+                if(playerSpawnPoints.Count > 0)
+                {
+                    int position = Random.Range(0, playerSpawnPoints.Count);
+
+                    cc.transform.position = playerSpawnPoints[position].position;
+                    playerSpawnPoints.RemoveAt(position);
+                }
+            }
+            foreach (CharacterController cc in enemyTeam)
+            {
+                if (enemySpawnPoints.Count > 0)
+                {
+                    int position = Random.Range(0, enemySpawnPoints.Count);
+
+                    cc.transform.position = enemySpawnPoints[position].position;
+                    enemySpawnPoints.RemoveAt(position);
+                }
+            }
+        }
+
+
+
         CameraController.Instance.SetMoveTarget(activePlayer.transform.position);
 
         currentChar = -1;
