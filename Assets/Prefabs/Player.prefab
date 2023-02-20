@@ -877,6 +877,7 @@ MonoBehaviour:
     type: 3}
   defendObject: {fileID: 322299804}
   isDefending: 0
+  anim: {fileID: 318181144}
 --- !u!195 &7210904264452578531
 NavMeshAgent:
   m_ObjectHideFlags: 0

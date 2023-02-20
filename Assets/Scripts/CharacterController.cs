@@ -45,6 +45,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private GameObject defendObject;
     [SerializeField] private bool isDefending;
 
+    [SerializeField] private Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -80,6 +82,8 @@ public class CharacterController : MonoBehaviour
                     isMoving = false;
 
                     GameManager.Instance.FinishedMovement();
+
+                    anim.SetBool("isWalking", false);
                 }
             }
         }
@@ -101,6 +105,8 @@ public class CharacterController : MonoBehaviour
 
         navAgent.SetDestination(moveTarget);
         isMoving = true;
+
+        anim.SetBool("isWalking", true);
     }
 
     public void GetNearbyMeleeTargets()
@@ -138,6 +144,8 @@ public class CharacterController : MonoBehaviour
     {
         //meleeTargets[currentMeleeTarget].gameObject.SetActive(false);
         meleeTargets[currentMeleeTarget].TakeDamage(meleeDamage);
+
+        anim.SetTrigger("doMelee");
     }
 
     public void TakeDamage(float damageToTake)
@@ -155,7 +163,7 @@ public class CharacterController : MonoBehaviour
 
             navAgent.enabled = false;
 
-            transform.rotation = Quaternion.Euler(-70f, transform.rotation.eulerAngles.y, 0f);
+            //transform.rotation = Quaternion.Euler(-70f, transform.rotation.eulerAngles.y, 0f);
 
             GameManager.Instance.GetAllCharacters().Remove(this);
             if (GameManager.Instance.GetPlayerTeam().Contains(this))
@@ -166,6 +174,12 @@ public class CharacterController : MonoBehaviour
             {
                 GameManager.Instance.GetEnemyTeam().Remove(this);
             }
+
+            anim.SetTrigger("die");
+        }
+        else
+        {
+            anim.SetTrigger("takeHit");
         }
 
         UpdateHealthDisplay();
