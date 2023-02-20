@@ -146,6 +146,8 @@ public class CharacterController : MonoBehaviour
         meleeTargets[currentMeleeTarget].TakeDamage(meleeDamage);
 
         anim.SetTrigger("doMelee");
+
+        SFXManager.instance.MeleeHit.Play();
     }
 
     public void TakeDamage(float damageToTake)
@@ -175,11 +177,21 @@ public class CharacterController : MonoBehaviour
                 GameManager.Instance.GetEnemyTeam().Remove(this);
             }
 
+            
             anim.SetTrigger("die");
+            if (!isEnemy)
+            {
+                SFXManager.instance.DeathHuman.Play();
+            } else
+            {
+                SFXManager.instance.DeathRobot.Play();
+            }
         }
         else
         {
             anim.SetTrigger("takeHit");
+
+            SFXManager.instance.TakeDamage.Play();
         }
 
         UpdateHealthDisplay();
@@ -260,6 +272,8 @@ public class CharacterController : MonoBehaviour
 
             shootLine.SetPosition(0, shootPoint.position);
             shootLine.SetPosition(1, hit.point);
+
+            SFXManager.instance.Impact.Play();
         }
         else
         {
@@ -273,6 +287,8 @@ public class CharacterController : MonoBehaviour
 
         shootLine.gameObject.SetActive(true);
         shotRemainCounter = shotRemainTime;
+
+        SFXManager.instance.PlayShoot();
     }
 
     public float CheckShotChance()

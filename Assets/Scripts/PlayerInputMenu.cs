@@ -58,6 +58,8 @@ public class PlayerInputMenu : MonoBehaviour
     public void SkipTurn()
     {
         GameManager.Instance.EndTurn();
+
+        SFXManager.instance.UiSelect.Play();
     }
 
     public IEnumerator WaitToEndActionCo(float timeToWait)
@@ -84,6 +86,8 @@ public class PlayerInputMenu : MonoBehaviour
         moveMenu.SetActive(true);
 
         ShowMove();
+
+        SFXManager.instance.UiSelect.Play();
     }
 
     public void HideMoveMenu()
@@ -91,6 +95,8 @@ public class PlayerInputMenu : MonoBehaviour
         HideMenus();
         MoveGrid.Instance.HideMovePoints();
         ShowInputMenu();
+
+        SFXManager.instance.UiCancel.Play();
     }
 
     public void ShowMove()
@@ -100,6 +106,7 @@ public class PlayerInputMenu : MonoBehaviour
             MoveGrid.Instance.ShowPointsInRange(GameManager.Instance.GetActivePlayer().GetMoveRange(), GameManager.Instance.GetActivePlayer().transform.position);
             GameManager.Instance.SetCurrentActionCost(1);
         }
+        SFXManager.instance.UiSelect.Play();
     }
 
     public void ShowRun()
@@ -109,6 +116,7 @@ public class PlayerInputMenu : MonoBehaviour
             MoveGrid.Instance.ShowPointsInRange(GameManager.Instance.GetActivePlayer().GetRunRange(), GameManager.Instance.GetActivePlayer().transform.position);
             GameManager.Instance.SetCurrentActionCost(2);
         }
+        SFXManager.instance.UiSelect.Play();
     }
     #endregion
 
@@ -117,6 +125,7 @@ public class PlayerInputMenu : MonoBehaviour
     {
         HideMenus();
         meleeMenu.SetActive(true);
+        SFXManager.instance.UiSelect.Play();
     }
 
     public void HideMeleeMenu()
@@ -124,6 +133,8 @@ public class PlayerInputMenu : MonoBehaviour
         HideMenus();
         ShowInputMenu();
         GameManager.Instance.GetTargetDisplay().SetActive(false);
+
+        SFXManager.instance.UiCancel.Play();
     }
 
     public void CheckMelee()
@@ -141,6 +152,7 @@ public class PlayerInputMenu : MonoBehaviour
         else
         {
             ShowErrorText("No Enemies in Melee Range!");
+            SFXManager.instance.UiCancel.Play();
         }
     }
 
@@ -154,6 +166,8 @@ public class PlayerInputMenu : MonoBehaviour
         GameManager.Instance.GetTargetDisplay().SetActive(false);
 
         StartCoroutine(WaitToEndActionCo(1f));
+
+        SFXManager.instance.UiSelect.Play();
     }
 
     public void NextMeleeTarget()
@@ -165,6 +179,8 @@ public class PlayerInputMenu : MonoBehaviour
         }
         GameManager.Instance.GetTargetDisplay().transform.position = GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform.position;
         GameManager.Instance.GetActivePlayer().LookAtTarget(GameManager.Instance.GetActivePlayer().GetMeleeTargetsList()[GameManager.Instance.GetActivePlayer().currentMeleeTarget].transform);
+
+        SFXManager.instance.UiSelect.Play();
     }
     #endregion
 
@@ -175,6 +191,8 @@ public class PlayerInputMenu : MonoBehaviour
         shootMenu.SetActive(true);
 
         UpdateHitChance();
+
+        SFXManager.instance.UiSelect.Play();
     }
 
     public void HideShootMenu()
@@ -185,6 +203,8 @@ public class PlayerInputMenu : MonoBehaviour
         GameManager.Instance.GetTargetDisplay().SetActive(false);
 
         CameraController.Instance.SetMoveTarget(GameManager.Instance.GetActivePlayer().transform.position);
+
+        SFXManager.instance.UiCancel.Play();
     }
 
     public void CheckShoot()
@@ -205,6 +225,7 @@ public class PlayerInputMenu : MonoBehaviour
         else
         {
             ShowErrorText("No Enemies In Firing Range");
+            SFXManager.instance.UiCancel.Play();
         }
     }
 
@@ -222,6 +243,8 @@ public class PlayerInputMenu : MonoBehaviour
         GameManager.Instance.GetActivePlayer().LookAtTarget(GameManager.Instance.GetActivePlayer().GetShootTargetsList()[GameManager.Instance.GetActivePlayer().currentShootTarget].transform);
 
         CameraController.Instance.SetFireView();
+
+        SFXManager.instance.UiSelect.Play();
     }
 
     public void FireShot()
@@ -232,6 +255,8 @@ public class PlayerInputMenu : MonoBehaviour
         GameManager.Instance.GetTargetDisplay().SetActive(false);
 
         StartCoroutine(WaitToEndActionCo(1f));
+
+        SFXManager.instance.UiSelect.Play();
     }
 
     public void UpdateHitChance()
@@ -249,6 +274,8 @@ public class PlayerInputMenu : MonoBehaviour
     {
         GameManager.Instance.GetActivePlayer().SetDefending(true);
         GameManager.Instance.EndTurn();
+
+        SFXManager.instance.UiSelect.Play();
     }
 
     #endregion
