@@ -233,7 +233,7 @@ MonoBehaviour:
   moveChance: 60
   defendChance: 40
   skipChance: 0.5
-  ignoreShootChance: 40
+  ignoreShootChance: 36.8
   moveRandomChance: 25
 --- !u!114 &8471512443162956111 stripped
 MonoBehaviour:

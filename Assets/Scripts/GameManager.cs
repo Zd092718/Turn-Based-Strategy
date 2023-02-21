@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+
     private void Awake()
     {
         Instance = this;
@@ -27,12 +28,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Transform> playerSpawnPoints = new List<Transform>();
     [SerializeField] private List<Transform> enemySpawnPoints = new List<Transform>();
 
+    [SerializeField] private bool isMatchEnded;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
         List<CharacterController> tempList = new List<CharacterController>();
 
         tempList.AddRange(FindObjectsOfType<CharacterController>());
@@ -79,9 +81,9 @@ public class GameManager : MonoBehaviour
 
         if (shouldSpawnAtRandomPoints)
         {
-            foreach(CharacterController cc in playerTeam)
+            foreach (CharacterController cc in playerTeam)
             {
-                if(playerSpawnPoints.Count > 0)
+                if (playerSpawnPoints.Count > 0)
                 {
                     int position = Random.Range(0, playerSpawnPoints.Count);
 
@@ -125,67 +127,127 @@ public class GameManager : MonoBehaviour
     {
         turnPointsRemaining -= currentActionCost;
 
-        if (turnPointsRemaining <= 0)
-        {
-            EndTurn();
-        }
-        else
-        {
-            if (activePlayer.GetIsEnemy() == false)
-            {
-                //MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+        CheckForVictory();
 
-                PlayerInputMenu.Instance.ShowInputMenu();
+        if (isMatchEnded == false)
+        {
+            if (turnPointsRemaining <= 0)
+            {
+                EndTurn();
             }
             else
             {
-                PlayerInputMenu.Instance.HideMenus();
+                if (activePlayer.GetIsEnemy() == false)
+                {
+                    //MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
 
-                activePlayer.GetBrain().ChooseAction();
+                    PlayerInputMenu.Instance.ShowInputMenu();
+                }
+                else
+                {
+                    PlayerInputMenu.Instance.HideMenus();
+
+                    activePlayer.GetBrain().ChooseAction();
+                }
             }
         }
-
         PlayerInputMenu.Instance.UpdateTurnPointText(turnPointsRemaining);
     }
 
     public void EndTurn()
     {
-        currentChar++;
+        CheckForVictory();
 
-        if (currentChar >= allChars.Count)
+        if (isMatchEnded == false)
         {
-            currentChar = 0;
+            currentChar++;
+
+            if (currentChar >= allChars.Count)
+            {
+                currentChar = 0;
+            }
+
+            activePlayer = allChars[currentChar];
+
+            CameraController.Instance.SetMoveTarget(activePlayer.transform.position);
+
+
+            turnPointsRemaining = totalTurnPoints;
+
+            if (activePlayer.GetIsEnemy() == false)
+            {
+                //MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+
+                PlayerInputMenu.Instance.ShowInputMenu();
+                PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(true);
+            }
+            else
+            {
+                //StartCoroutine(AISkipCo());
+
+                PlayerInputMenu.Instance.HideMenus();
+                PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(false);
+
+                activePlayer.GetBrain().ChooseAction();
+            }
+
+            currentActionCost = 1;
+
+            PlayerInputMenu.Instance.UpdateTurnPointText(turnPointsRemaining);
+
+            activePlayer.SetDefending(false);
         }
 
-        activePlayer = allChars[currentChar];
+    }
 
-        CameraController.Instance.SetMoveTarget(activePlayer.transform.position);
-       
+    public void CheckForVictory()
+    {
+        bool allDead = true;
 
-        turnPointsRemaining = totalTurnPoints;
-
-        if (activePlayer.GetIsEnemy() == false)
+        foreach (CharacterController cc in playerTeam)
         {
-            //MoveGrid.Instance.ShowPointsInRange(activePlayer.GetMoveRange(), activePlayer.transform.position);
+            if (cc.GetCurrentHealth() > 0)
+            {
+                allDead = false;
+            }
+        }
 
-            PlayerInputMenu.Instance.ShowInputMenu();
-            PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(true);
+        if (allDead)
+        {
+            PlayerLoses();
         }
         else
         {
-            //StartCoroutine(AISkipCo());
+            allDead = true;
 
-            PlayerInputMenu.Instance.HideMenus();
-            PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(false);
+            foreach (CharacterController cc in enemyTeam)
+            {
+                if (cc.GetCurrentHealth() > 0)
+                {
+                    allDead = false;
+                }
+            }
 
-            activePlayer.GetBrain().ChooseAction();
+            if (allDead)
+            {
+                PlayerWins();
+            }
+
         }
+    }
 
-        currentActionCost = 1;
+    public void PlayerWins()
+    {
+        Debug.Log("Player Wins");
 
-        PlayerInputMenu.Instance.UpdateTurnPointText(turnPointsRemaining);
+        isMatchEnded = true;
+    }
 
-        activePlayer.SetDefending(false);
+    public void PlayerLoses()
+    {
+        Debug.Log("Player Loses");
+
+        isMatchEnded = true;
     }
     #region !Getters and Setters!
     public CharacterController GetActivePlayer()
@@ -233,5 +295,7 @@ public class GameManager : MonoBehaviour
     {
         return targetDisplay;
     }
+
+    public bool IsMatchEnded { get => isMatchEnded; set => isMatchEnded = value; }
     #endregion
 }

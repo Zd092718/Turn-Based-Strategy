@@ -47,12 +47,15 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] private Animator anim;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         moveTarget = transform.position;
         navAgent.speed = moveSpeed;
         currentHealth = maxHealth;
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
 
         UpdateHealthDisplay();
 
@@ -177,12 +180,13 @@ public class CharacterController : MonoBehaviour
                 GameManager.Instance.GetEnemyTeam().Remove(this);
             }
 
-            
+
             anim.SetTrigger("die");
             if (!isEnemy)
             {
                 SFXManager.instance.DeathHuman.Play();
-            } else
+            }
+            else
             {
                 SFXManager.instance.DeathRobot.Play();
             }
