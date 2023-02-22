@@ -190,6 +190,8 @@ public class CharacterController : MonoBehaviour
             {
                 SFXManager.instance.DeathRobot.Play();
             }
+
+            GetComponent<Collider>().enabled = false;
         }
         else
         {

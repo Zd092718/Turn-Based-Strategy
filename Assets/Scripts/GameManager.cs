@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Transform> enemySpawnPoints = new List<Transform>();
 
     [SerializeField] private bool isMatchEnded;
+
+    [SerializeField] private string levelToLoad;
 
 
     // Start is called before the first frame update
@@ -241,6 +244,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player Wins");
 
         isMatchEnded = true;
+
+        PlayerInputMenu.Instance.ResultText.gameObject.SetActive(true);
+        PlayerInputMenu.Instance.ResultText.text = "Player Wins!";
+
+        PlayerInputMenu.Instance.EndBattleButton.SetActive(true);
+
+        PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(false);
     }
 
     public void PlayerLoses()
@@ -248,6 +258,18 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player Loses");
 
         isMatchEnded = true;
+
+        PlayerInputMenu.Instance.ResultText.gameObject.SetActive(true);
+        PlayerInputMenu.Instance.ResultText.text = "Player Loses!";
+
+        PlayerInputMenu.Instance.EndBattleButton.SetActive(true);
+
+        PlayerInputMenu.Instance.GetTurnPointText().gameObject.SetActive(false);
+    }
+
+    public void LeaveBattle()
+    {
+        SceneManager.LoadScene(levelToLoad);
     }
     #region !Getters and Setters!
     public CharacterController GetActivePlayer()

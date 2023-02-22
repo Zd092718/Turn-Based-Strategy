@@ -6,11 +6,15 @@ using TMPro;
 public class PlayerInputMenu : MonoBehaviour
 {
     public static PlayerInputMenu Instance { get; private set; }
+    public TMP_Text ResultText { get => resultText; set => resultText = value; }
+    public GameObject EndBattleButton { get => endBattleButton; set => endBattleButton = value; }
 
     [SerializeField] private GameObject inputMenu, moveMenu, meleeMenu, shootMenu;
     [SerializeField] private TMP_Text turnPointsText;
     [SerializeField] private TMP_Text errorText;
     [SerializeField] private TMP_Text hitChanceText;
+    [SerializeField] private TMP_Text resultText;
+    [SerializeField] private GameObject endBattleButton;
 
     [SerializeField] private float errorDisplayTime = 2f;
     private float errorCounter;
@@ -279,4 +283,9 @@ public class PlayerInputMenu : MonoBehaviour
     }
 
     #endregion
+
+    public void LeaveBattle()
+    {
+        GameManager.Instance.LeaveBattle();
+    }
 }
